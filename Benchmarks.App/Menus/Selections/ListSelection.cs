@@ -21,14 +21,14 @@ internal sealed record ListSelection : Selection
             benchmarks.Max(benchmark => benchmark.Category.Description().Length));
 
         var prompt = new SelectionPrompt<Benchmark>()
-            .AddChoices(benchmarks.ToArray())
+            .AddChoices([.. benchmarks])
             .PageSize(16)
         .UseConverter(benchmark => ConvertBenchmark(benchmark, padding))
         .MoreChoicesText("[gray](Move up and down to reveal more benchmarks)[/]");
 
         // TODO Capture X (or whatever) to return to main menu instead of exit workaround
         // Would also be good to filter by keyboard input e.g. Esc to return to main menu
-        prompt.AddChoice(new Benchmark("Exit", string.Empty));
+        prompt.AddChoice(new Benchmark("Exit"));
 
         var table = new Table { Border = TableBorder.Simple };
         table.AddColumns("Benchmark", "Description", "Category");
