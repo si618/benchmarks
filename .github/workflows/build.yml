@@ -48,7 +48,8 @@ jobs:
         id: list-benchmarks
         run: |
           dotnet run \
-            --project ./Benchmarks/Benchmarks.csproj \
+            --project ./Benchmarks.App/Benchmarks.App.csproj \
+            --configuration Release \
             list
 
       - name: Run benchmarks
