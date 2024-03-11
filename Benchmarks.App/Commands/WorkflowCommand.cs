@@ -10,7 +10,7 @@ internal sealed class WorkflowCommand : Command
         }
 
         // Exporters: GitHub/StackOverflow/RPlot/CSV/JSON/HTML/XML")]
-        var args = new[] { "--filter", $"Benchmarks*", "--exporters", "json" };
+        var args = new[] { "--filter", "*", "--exporters", "json" };
 
         BenchmarkRunner.RunBenchmarks([.. Reflection.GetBenchmarkTypes()], args);
 
@@ -24,7 +24,7 @@ internal sealed class WorkflowCommand : Command
         string resultsFile = "Benchmarks",
         string searchPattern = "Benchmarks.*.json")
     {
-        var resultsPath = Path.Combine(resultsDir, resultsFile + ".json");
+        var resultsPath = Path.Combine(resultsDir, $"{resultsFile}.json");
 
         if (!Directory.Exists(resultsDir))
         {
