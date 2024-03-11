@@ -24,6 +24,8 @@ function CreateMigration {
     }
     Write-Host "Generating migrations for $dbServer"
     dotnet ef migrations add Current -p $project -c $context
+    Write-Host "Formatting $dbServer"
+    dotnet format $project
 }
 
 CreateMigration -dbServer Postgres

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Benchmarks.Database.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20240311045217_Current")]
+    [Migration("20240311050853_Current")]
     partial class Current
     {
         /// <inheritdoc />

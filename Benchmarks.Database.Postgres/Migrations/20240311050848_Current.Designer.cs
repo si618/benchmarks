@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Benchmarks.Database.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240311045215_Current")]
+    [Migration("20240311050848_Current")]
     partial class Current
     {
         /// <inheritdoc />
