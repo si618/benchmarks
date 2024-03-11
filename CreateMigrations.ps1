@@ -1,4 +1,10 @@
-dotnet tool install --global dotnet-ef
+<#
+.SYNOPSIS
+    (Re)generate benchmark migrations.
+
+.DESCRIPTION
+    Remove existing migrations for Postgres and Sqlserver, and regenerate with current model.
+#>
 
 Push-Location .
 Set-Location $PSScriptRoot
@@ -6,15 +12,21 @@ Set-Location $PSScriptRoot
 function CreateMigration {
     param(
         [Parameter(Mandatory=$true)]
-        [string]$db
+        [string]$dbServer
     )
-    $name = "Benchmarks.Database.$name"
-    $context = "$name" + "DbContext"
-    Remove-Item -Recurse -Force -Path .\$name\Migrations
-    dotnet ef migrations add Initial -c $context -o $name\Migrations    
+    $name = "Benchmarks.Database.$dbServer"
+    $project = ".\$name\$name.csproj"
+    $context = "$dbServer" + "DbContext"
+    $path = ".\$name\Migrations"
+    if (Test-Path $path) {
+        Write-Host "Removing existing $dbServer migrations"
+        Remove-Item -Recurse -Force -Path $path
+    }
+    Write-Host "Generating migrations for $dbServer"
+    dotnet ef migrations add Current -p $project -c $context
 }
 
-Pop-Location
+CreateMigration -dbServer Postgres
+CreateMigration -dbServer SqlServer
 
-CreateMigration -db Postgres
-CreateMigration -db SqlServer
+Pop-Location
