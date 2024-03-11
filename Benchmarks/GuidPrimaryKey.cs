@@ -6,7 +6,7 @@
     Category.Database)]
 public class GuidPrimaryKey
 {
-    [Params(100, 1_000)]
+    [Params(1_000, 10_000)]
     public int RowCount { get; set; }
 
     private readonly MsSqlContainer _sqlServerContainer = new MsSqlBuilder()
