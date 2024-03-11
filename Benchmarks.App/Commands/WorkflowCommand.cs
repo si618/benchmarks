@@ -5,8 +5,6 @@ internal sealed class WorkflowCommand : Command
     [SuppressMessage("ReSharper", "RedundantNullableFlowAttribute")]
     public override int Execute([NotNull] CommandContext context)
     {
-        ConsoleWriter.WriteHeader();
-
         if (BenchmarkRunner.IsDebugConfiguration(true))
         {
             return 1;
@@ -25,7 +23,7 @@ internal sealed class WorkflowCommand : Command
     private static void CombineBenchmarkResults(
         string resultsDir = "./BenchmarkDotNet.Artifacts/results",
         string resultsFile = "Benchmarks",
-        string searchPattern = "Benchmarks.json")
+        string searchPattern = "Benchmarks.*.json")
     {
         var resultsPath = Path.Combine(resultsDir, resultsFile + ".json");
 
