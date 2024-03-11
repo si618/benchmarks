@@ -1,11 +1,11 @@
 ﻿namespace Benchmarks.App.Commands;
 
-internal sealed class InfoCommand : Command<BenchmarkRunSettings>
+internal sealed class InfoCommand : Command<BenchmarkSettings>
 {
     [SuppressMessage("ReSharper", "RedundantNullableFlowAttribute")]
     public override int Execute(
         [NotNull] CommandContext context,
-        [NotNull] BenchmarkRunSettings settings)
+        [NotNull] BenchmarkSettings settings)
     {
         ConsoleWriter.WriteHeader();
 

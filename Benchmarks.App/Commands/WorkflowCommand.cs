@@ -5,14 +5,17 @@ internal sealed class WorkflowCommand : Command
     [SuppressMessage("ReSharper", "RedundantNullableFlowAttribute")]
     public override int Execute([NotNull] CommandContext context)
     {
+        ConsoleWriter.WriteHeader();
+
         if (BenchmarkRunner.IsDebugConfiguration(true))
         {
             return 1;
         }
 
-        var settings = new ListSettings { Exporters = "json" };
+        // Exporters: GitHub/StackOverflow/RPlot/CSV/JSON/HTML/XML")]
+        var args = new[] { "--filter", $"Benchmarks*", "--exporters", "json" };
 
-        BenchmarkRunner.RunBenchmarks(Reflection.GetBenchmarkTypes().ToArray(), settings.BuildArgs());
+        BenchmarkRunner.RunBenchmarks([.. Reflection.GetBenchmarkTypes()], args);
 
         CombineBenchmarkResults();
 
