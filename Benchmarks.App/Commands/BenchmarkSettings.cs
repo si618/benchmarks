@@ -19,7 +19,7 @@ internal sealed class BenchmarkSettings : CommandSettings
 
         if (Reflection.GetBenchmarkTypes().All(type => type.Name != Name))
         {
-            return ValidationResult.Error($"Benchmark not found {Name}");
+            return ValidationResult.Error($"Benchmark not found '{Name}'");
         }
 
         return ValidationResult.Success();
