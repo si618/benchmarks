@@ -2,9 +2,9 @@
 
 internal static class PreFlightCheck
 {
-    internal static void CanStartTestContainers()
+    internal static void Run(bool isApp)
     {
-        ConsoleWriter.WriteHeader(clearConsole: false);
+        ConsoleWriter.WriteHeader();
 
         AnsiConsole.MarkupLine("[gray]Running pre-flight check to verify test containers can start[/]");
         AnsiConsole.WriteLine();
@@ -20,6 +20,9 @@ internal static class PreFlightCheck
         AnsiConsole.WriteLine();
         AnsiConsole.MarkupLine("[gray]Test container pre-flight check passed[/]");
 
-        Thread.Sleep(TimeSpan.FromSeconds(1.66));
+        if (isApp)
+        {
+            Thread.Sleep(TimeSpan.FromSeconds(1.66));
+        }
     }
 }

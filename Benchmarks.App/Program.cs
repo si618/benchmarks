@@ -29,10 +29,15 @@ app.Configure(config =>
 
 try
 {
-    // Do not run the preflight check if the user is asking for help or version information
-    if (args.Length > 0 && !args.Any(a => a.StartsWith('-')))
+    var isPreFlightCheckNeeded =
+        (args.Length > 0 && !args.Any(arg => arg.StartsWith('-'))) &&
+        args.Any(arg =>
+            arg.Contains("app", StringComparison.OrdinalIgnoreCase) ||
+            arg.Contains("benchmark", StringComparison.OrdinalIgnoreCase));
+    if (isPreFlightCheckNeeded)
     {
-        PreFlightCheck.CanStartTestContainers();
+        var isApp = args.Any(arg => arg.Contains("app", StringComparison.OrdinalIgnoreCase));
+        PreFlightCheck.Run(isApp);
     }
 
     return await app.RunAsync(args);
