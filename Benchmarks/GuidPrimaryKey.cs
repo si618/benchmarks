@@ -24,15 +24,15 @@ public class GuidPrimaryKey
             _ => throw new NotImplementedException()
         });
 
-    private T[] CreateEntities<T>() where T : SimpleEntity, new()
+    private TEntity[] CreateEntities<TEntity>() where TEntity : SimpleEntity, new()
     {
-        var entities = new T[RowCount];
+        var entities = new TEntity[RowCount];
 
         for (var row = 1; row <= RowCount; row++)
         {
             var now = DateTimeOffset.UtcNow;
 
-            entities[row - 1] = new T()
+            entities[row - 1] = new TEntity
             {
                 Id = Guid.NewGuid(),
                 Text = $"Row {row}",
