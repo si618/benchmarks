@@ -19,22 +19,22 @@ internal static partial class BenchmarkExtensions
             ShowHeaders = false
         };
 
-        table.AddColumn(new TableColumn("-").PadLeft(2).PadRight(3));
+        table.AddColumn(new TableColumn("-").PadRight(3));
         table.AddColumn("-");
 
-        table.AddRow("[gray]Benchmark[/]", benchmark.Name.TrimEnd("Benchmark".ToCharArray()));
+        table.AddRow("  [gray]Benchmark[/]", benchmark.Name.TrimEnd("Benchmark".ToCharArray()));
 
         if (benchmark.Name != benchmark.Description)
         {
-            table.AddRow("[gray]Description[/]", benchmark.Description);
+            table.AddRow("  [gray]Description[/]", benchmark.Description);
         }
 
         if (benchmark.Link is not null)
         {
-            table.AddRow("[gray]Link[/]", benchmark.Link.ToString());
+            table.AddRow("  [gray]Link[/]", benchmark.Link.ToString());
         }
 
-        table.AddRow("[gray]Category[/]", benchmark.Category.Description());
+        table.AddRow("  [gray]Category[/]", benchmark.Category.Description());
 
         return table;
     }
