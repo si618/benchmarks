@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Benchmarks.Database.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240311050848_Current")]
+    [Migration("20240311053152_Current")]
     partial class Current
     {
         /// <inheritdoc />
@@ -33,9 +33,6 @@ namespace Benchmarks.Database.Postgres.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");
@@ -58,9 +55,6 @@ namespace Benchmarks.Database.Postgres.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");

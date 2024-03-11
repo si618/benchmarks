@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Benchmarks.Database.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20240311050853_Current")]
+    [Migration("20240311053158_Current")]
     partial class Current
     {
         /// <inheritdoc />
@@ -33,9 +33,6 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");
@@ -59,9 +56,6 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");

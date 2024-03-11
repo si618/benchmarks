@@ -6,7 +6,6 @@ public abstract class SimpleEntity
     public string Text { get; set; } = string.Empty;
     public DateTimeOffset DateTimeUtc { get; set; } = DateTimeOffset.UtcNow;
     public long LongInteger { get; set; }
-    public decimal Decimal { get; set; }
 }
 
 public class ClusteredIndex : SimpleEntity;

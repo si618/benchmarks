@@ -18,8 +18,7 @@ namespace Benchmarks.Database.Postgres.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LongInteger = table.Column<long>(type: "bigint", nullable: false),
-                    Decimal = table.Column<decimal>(type: "numeric(20,5)", nullable: false)
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,8 +32,7 @@ namespace Benchmarks.Database.Postgres.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    LongInteger = table.Column<long>(type: "bigint", nullable: false),
-                    Decimal = table.Column<decimal>(type: "numeric(20,5)", nullable: false)
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

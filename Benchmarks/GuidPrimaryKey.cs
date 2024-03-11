@@ -37,8 +37,7 @@ public class GuidPrimaryKey
                 Id = Guid.NewGuid(),
                 Text = $"Row {row}",
                 DateTimeUtc = now,
-                LongInteger = now.Ticks,
-                Decimal = now.Ticks / row
+                LongInteger = now.Ticks
             };
         }
 

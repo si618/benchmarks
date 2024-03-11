@@ -31,9 +31,6 @@ namespace Benchmarks.Database.Postgres.Migrations
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
-
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");
 
@@ -55,9 +52,6 @@ namespace Benchmarks.Database.Postgres.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");

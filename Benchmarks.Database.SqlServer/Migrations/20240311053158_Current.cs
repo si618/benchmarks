@@ -18,8 +18,7 @@ namespace Benchmarks.Database.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    LongInteger = table.Column<long>(type: "bigint", nullable: false),
-                    Decimal = table.Column<decimal>(type: "decimal(20,5)", nullable: false)
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,8 +33,7 @@ namespace Benchmarks.Database.SqlServer.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    LongInteger = table.Column<long>(type: "bigint", nullable: false),
-                    Decimal = table.Column<decimal>(type: "decimal(20,5)", nullable: false)
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

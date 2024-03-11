@@ -31,9 +31,6 @@ namespace Benchmarks.Database.SqlServer.Migrations
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
-
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");
 
@@ -56,9 +53,6 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
                     b.Property<DateTimeOffset>("DateTimeUtc")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<decimal>("Decimal")
-                        .HasColumnType("decimal(20, 5)");
 
                     b.Property<long>("LongInteger")
                         .HasColumnType("bigint");
