@@ -34,7 +34,6 @@ internal static class Reflection
             attribute.Category);
     }
 
-
     public static IEnumerable<Type> GetBenchmarkTypes() =>
         typeof(GuidPrimaryKey).Assembly
             .GetTypes()

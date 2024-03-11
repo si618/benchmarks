@@ -2,10 +2,7 @@
 
 internal sealed class InfoCommand : Command<BenchmarkSettings>
 {
-    [SuppressMessage("ReSharper", "RedundantNullableFlowAttribute")]
-    public override int Execute(
-        [NotNull] CommandContext context,
-        [NotNull] BenchmarkSettings settings)
+    public override int Execute(CommandContext context, BenchmarkSettings settings)
     {
         ConsoleWriter.WriteHeader();
 

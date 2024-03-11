@@ -8,9 +8,6 @@ internal record Benchmark(
 
 internal static partial class BenchmarkExtensions
 {
-    internal static bool HasSimilarNameAndDescription(this Benchmark benchmark) =>
-        benchmark.Description.ReplaceWhitespace(string.Empty) == benchmark.Name;
-
     internal static Table Markup(this Benchmark benchmark)
     {
         var table = new Table
@@ -42,10 +39,4 @@ internal static partial class BenchmarkExtensions
 
         return table;
     }
-
-    [GeneratedRegex(@"\s+")]
-    private static partial Regex WhitespaceRegex();
-    private static readonly Regex MatchWhitespace = WhitespaceRegex();
-    private static string ReplaceWhitespace(this string input, string replacement) =>
-        MatchWhitespace.Replace(input, replacement);
 }

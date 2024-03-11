@@ -12,6 +12,7 @@ internal sealed class MainMenu : MenuBase
             new ExitSelection(4) { ExitApp = true }
         };
     }
+
     public override int Render()
     {
         var selected = Choices.First();

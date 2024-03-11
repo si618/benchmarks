@@ -4,7 +4,7 @@ internal static class BenchmarkRunner
 {
     public static IEnumerable<Summary> RunAndBuildSummaries()
     {
-        var args = new[] { "--filter", $"Benchmarks*" };
+        var args = new[] { "--filter", "Benchmarks*" };
         var types = Reflection.GetBenchmarkTypes().ToArray();
 
         return RunAndBuildSummaries(types, args);
@@ -21,7 +21,6 @@ internal static class BenchmarkRunner
 
     public static IEnumerable<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
     {
-
         AnsiConsole.Cursor.Move(CursorDirection.Up, 1);
 
         Console.SetOut(TextWriter.Null);
@@ -45,13 +44,10 @@ internal static class BenchmarkRunner
 
     internal static bool IsDebugConfiguration(bool warnRatherThanFail = false)
     {
-        // ReSharper disable once JoinDeclarationAndInitializer
-        bool debug;
+        var debug = false;
 
 #if DEBUG
         debug = true;
-#else
-        debug = false;
 #endif
 
         if (!debug)

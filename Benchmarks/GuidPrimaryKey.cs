@@ -54,7 +54,7 @@ public class GuidPrimaryKey
     [Benchmark]
     public async Task InsertGuidPrimaryKeyPostgres()
     {
-        using var dbContext = CreateDbContext(DbServer.Postgres);
+        await using var dbContext = CreateDbContext(DbServer.Postgres);
         await dbContext.Database.MigrateAsync();
         await dbContext.ClusteredIndexes.AddRangeAsync(CreateEntities<ClusteredIndex>());
         await dbContext.SaveChangesAsync();
@@ -63,7 +63,7 @@ public class GuidPrimaryKey
     [Benchmark]
     public async Task InsertGuidPrimaryKeyWithClusteredIndexSqlServer()
     {
-        using var dbContext = CreateDbContext(DbServer.SqlServer);
+        await using var dbContext = CreateDbContext(DbServer.SqlServer);
         await dbContext.Database.MigrateAsync();
         await dbContext.ClusteredIndexes.AddRangeAsync(CreateEntities<ClusteredIndex>());
         await dbContext.SaveChangesAsync();
@@ -72,7 +72,7 @@ public class GuidPrimaryKey
     [Benchmark]
     public async Task InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer()
     {
-        using var dbContext = CreateDbContext(DbServer.SqlServer);
+        await using var dbContext = CreateDbContext(DbServer.SqlServer);
         await dbContext.Database.MigrateAsync();
         await dbContext.NonClusteredIndexes.AddRangeAsync(CreateEntities<NonClusteredIndex>());
         await dbContext.SaveChangesAsync();

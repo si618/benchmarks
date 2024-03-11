@@ -12,7 +12,12 @@ internal sealed class BenchmarkSettings : CommandSettings
 
     public override ValidationResult Validate()
     {
-        if (!Reflection.GetBenchmarkTypes().Any(type => type.Name == Name))
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            return ValidationResult.Error($"Benchmark name required");
+        }
+
+        if (Reflection.GetBenchmarkTypes().All(type => type.Name != Name))
         {
             return ValidationResult.Error($"Benchmark not found {Name}");
         }

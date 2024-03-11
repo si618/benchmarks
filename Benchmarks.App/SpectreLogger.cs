@@ -4,20 +4,11 @@ internal sealed class SpectreLogger : ILogger
 {
     public static readonly SpectreLogger Logger = new();
 
-    public void Write(LogKind logKind, string text)
-    {
-        Markup(logKind, text, writeLine: false);
-    }
+    public void Write(LogKind logKind, string text) => Markup(logKind, text, writeLine: false);
 
-    public void WriteLine()
-    {
-        AnsiConsole.WriteLine();
-    }
+    public void WriteLine() => AnsiConsole.WriteLine();
 
-    public void WriteLine(LogKind logKind, string text)
-    {
-        Markup(logKind, text, writeLine: true);
-    }
+    public void WriteLine(LogKind logKind, string text) => Markup(logKind, text, writeLine: true);
 
     public void Flush()
     {

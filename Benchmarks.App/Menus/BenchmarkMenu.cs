@@ -2,7 +2,7 @@
 
 internal sealed class BenchmarkMenu : MenuBase
 {
-    private Benchmark Benchmark { get; init; }
+    private Benchmark Benchmark { get; }
 
     public BenchmarkMenu(Benchmark benchmark)
     {
