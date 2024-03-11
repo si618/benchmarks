@@ -1,4 +1,4 @@
-name: Build and Benchmark
+﻿name: Build and Benchmark
 
 on:
   push:
@@ -16,19 +16,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 🚧 Checkout
         uses: actions/checkout@main
 
-      - name: Setup dotnet
+      - name: 🔨 Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Run dotnet build
+      - name: 🏗️ Run dotnet build
         id: build
         run: dotnet build --configuration Release
 
-      - name: Run dotnet format
+      - name: 🎨 Run dotnet format
         id: format
         run: dotnet format --verbosity diagnostic --verify-no-changes --no-restore
 
@@ -36,15 +36,15 @@ jobs:
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 🚧 Checkout
         uses: actions/checkout@main
 
-      - name: Setup dotnet
+      - name: 🔨 Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: List benchmarks
+      - name: 🎨 List benchmarks
         id: list-benchmarks
         run: |
           dotnet run \
@@ -52,7 +52,7 @@ jobs:
             --configuration Release \
             list
 
-      - name: Run benchmarks
+      - name: ⚗ Run benchmarks
         id: run-benchmarks
         run: |
           dotnet run \
@@ -60,7 +60,7 @@ jobs:
             --configuration Release \
             workflow
 
-      - name: Store benchmark results
+      - name: 🚚 Store benchmark results
         id: store-benchmarks
         if: ${{ github.event_name == 'push' }}
         uses: benchmark-action/github-action-benchmark@v1.19.3

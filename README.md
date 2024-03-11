@@ -1,4 +1,4 @@
-# 🧪 Benchmarks
+# 🧪 Benchmarks ⚗
 
 [![build](https://github.com/si618/benchmarks/actions/workflows/build.yml/badge.svg)](https://github.com/si618/benchmarks/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](LICENSE)
