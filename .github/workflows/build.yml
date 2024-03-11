@@ -8,9 +8,8 @@ on:
 
 env:
   DOTNET_NOLOGO: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_VERSION: 8.0.x
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 
 jobs:
   build:
@@ -22,7 +21,7 @@ jobs:
       - name: 🔨 Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: ./global.json
 
       - name: 🏗️ Run dotnet build
         id: build
@@ -42,7 +41,7 @@ jobs:
       - name: 🔨 Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+          global-json-file: ./global.json
 
       - name: 🎨 List benchmarks
         id: list-benchmarks
