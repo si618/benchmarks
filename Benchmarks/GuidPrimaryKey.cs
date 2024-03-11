@@ -32,7 +32,7 @@ public class GuidPrimaryKey
         {
             var now = DateTimeOffset.UtcNow;
 
-            entities[row] = new T()
+            entities[row - 1] = new T()
             {
                 Id = Guid.NewGuid(),
                 Text = $"Row {row}",
