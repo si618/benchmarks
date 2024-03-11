@@ -26,6 +26,11 @@ public static partial class Extensions
             table.AddRow("[gray]Description[/]", benchmark.Description);
         }
 
+        if (benchmark.Link is not null)
+        {
+            table.AddRow("[gray]Link[/]", benchmark.Link.ToString());
+        }
+
         table.AddRow("[gray]Category[/]", benchmark.Category.Description());
 
         return table;
