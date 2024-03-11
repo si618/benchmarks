@@ -1,0 +1,54 @@
+name: benchmark
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  deployments: write
+  contents: write
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚧 Checkout
+        uses: actions/checkout@main
+
+      - name: 🔨 Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: ./global.json
+
+      - name: 🎨 List benchmarks
+        id: list-benchmarks
+        run: |
+          dotnet run \
+            --project ./Benchmarks.App/Benchmarks.App.csproj \
+            --configuration Release \
+            list
+
+      - name: ⚗ Run benchmarks
+        id: run-benchmarks
+        run: |
+          dotnet run \
+            --project ./Benchmarks.App/Benchmarks.App.csproj \
+            --configuration Release \
+            workflow
+
+      - name: 🚚 Store benchmark results
+        id: store-benchmarks
+        if: ${{ github.event_name == 'push' }}
+        uses: benchmark-action/github-action-benchmark@v1.19.3
+        with:
+          name: Benchmarks
+          tool: benchmarkdotnet
+          output-file-path: BenchmarkDotNet.Artifacts/results/Benchmarks.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
