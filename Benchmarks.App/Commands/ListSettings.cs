@@ -2,9 +2,9 @@
 
 internal sealed class ListSettings : CommandSettings
 {
-    [Description("Filter by Benchmarks.<Name> (* wildcards accepted)")]
+    [Description("Benchmark name")]
     [CommandArgument(0, "[filter]")]
-    public string? Filter { get; init; }
+    public string Name { get; init; } = string.Empty;
 
     [Description("Allow debug configuration to run - use only for development")]
     [CommandOption("--debug")]
@@ -16,54 +16,23 @@ internal sealed class ListSettings : CommandSettings
 
     public override ValidationResult Validate()
     {
+        if (!Reflection.GetBenchmarkTypes().Any(type => type.Name == Name))
+        {
+            return ValidationResult.Error($"Benchmark not found {Name}");
+        }
+
         return ValidationResult.Success();
     }
 
-    public static Type[] BenchmarkTypes() =>
-        [.. Reflection.GetBenchmarkTypes()
-            .OrderBy(t => t.Name)
-            .ThenBy(t => t.Namespace)];
-
     public string[] BuildArgs()
     {
-        var args = new List<string> { "--filter" };
+        var args = new List<string> { "--filter", $"*{Name}*" };
 
-        // No filter means run all benchmarks for specified options
-        if (string.IsNullOrEmpty(Filter))
+        if (!string.IsNullOrEmpty(Exporters))
         {
-            args.Add("Benchmarks*");
+            args.Add("--exporters");
+            args.Add(Exporters);
         }
-        else
-        {
-            var benchmarks = Filter.Split(' ');
-
-            foreach (var benchmark in benchmarks)
-            {
-                if (benchmark.Contains('*'))
-                {
-                    // User added wildcard so use whatever was passed
-                    args.Add(benchmark);
-                }
-                else if (benchmark.Contains('.'))
-                {
-                    // User added namespace but no wildcard so add suffix
-                    args.Add($"{benchmark}*");
-                }
-                else
-                {
-                    // No wildcard or namespace so add wildcard prefix
-                    args.Add($"*{benchmark}");
-                }
-            }
-        }
-
-        if (string.IsNullOrEmpty(Exporters))
-        {
-            return [.. args];
-        }
-
-        args.Add("--exporters");
-        args.Add(Exporters);
 
         return [.. args];
     }

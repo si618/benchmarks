@@ -24,7 +24,7 @@ internal sealed record RunSelection : Selection
             return 1;
         }
 
-        var settings = new ListSettings();
+        var settings = new ListSettings { Name = Benchmark.Name };
         var summaries = BenchmarkRunner.RunAndBuildSummaries(settings);
         var builder = new SpectreReportBuilder(summaries);
         var report = builder.Build();

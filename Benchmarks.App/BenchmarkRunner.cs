@@ -2,14 +2,25 @@
 
 internal static class BenchmarkRunner
 {
+    public static IEnumerable<Summary> RunAndBuildSummaries()
+    {
+        var args = new[] { "--filter", $"Benchmarks*" };
+        var types = Reflection.GetBenchmarkTypes().ToArray();
+
+        return RunAndBuildSummaries(types, args);
+    }
+
+
     public static IEnumerable<Summary> RunAndBuildSummaries(ListSettings settings)
     {
         var args = settings.BuildArgs();
-        if (args.Length < 2)
-        {
-            // ReSharper disable once LocalizableElement - Exceptions in English
-            throw new ArgumentOutOfRangeException(nameof(settings), "Invalid arguments");
-        }
+        var type = Reflection.GetBenchmarkTypes().First(type => type.Name == settings.Name);
+
+        return RunAndBuildSummaries([type], args);
+    }
+
+    public static IEnumerable<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
+    {
 
         AnsiConsole.Cursor.Move(CursorDirection.Up, 1);
 
@@ -18,9 +29,9 @@ internal static class BenchmarkRunner
         var summaries = new List<Summary>();
         AnsiConsole.Status()
             .Spinner(Spinner.Known.Dots)
-            .Start(WaitingMessage(settings, args), _ =>
+            .Start(WaitingMessage(benchmarkTypes), _ =>
                 summaries.AddRange(
-                    RunBenchmarks(ListSettings.BenchmarkTypes(), args)));
+                    RunBenchmarks(benchmarkTypes, args)));
 
         Console.SetOut(Console.Out);
 
@@ -66,41 +77,19 @@ internal static class BenchmarkRunner
         return true;
     }
 
-    private static string WaitingMessage(ListSettings settings, IReadOnlyList<string> args)
+    private static string WaitingMessage(Type[] benchmarkTypes)
     {
         var message = new StringBuilder();
 
-        if (args.Count > 2)
-        {
-            message.Append("Running selected benchmarks");
-        }
-        else if (Reflection.TryGetBenchmark(ParseFilterForBenchmark(args[1]), out var benchmark))
-        {
-            message.Append($"Running {benchmark} for [yellow]{benchmark.Description}[/]");
-
-            if (!benchmark.HasSimilarNameAndDescription())
-            {
-                message.Append($" [gray](method: {benchmark.Name})[/]");
-            }
-        }
-        else
+        if (benchmarkTypes.Length > 1)
         {
             message.Append("Running benchmarks");
-
-            if (settings.Filter?.Length > 0)
-            {
-                message.Append($" matching [yellow]{settings.Filter!}[/]");
-            }
+        }
+        else if (Reflection.TryGetBenchmark(benchmarkTypes[0].Name, out var benchmark))
+        {
+            message.Append($"Running benchmark {benchmark.Name}");
         }
 
         return message.ToString();
-    }
-
-    private static string ParseFilterForBenchmark(string filter)
-    {
-        var benchmark = filter.Trim('*');
-        var found = Reflection.GetBenchmarkNames()
-            .FirstOrDefault(b => b.Equals(benchmark, StringComparison.OrdinalIgnoreCase));
-        return found ?? filter;
     }
 }

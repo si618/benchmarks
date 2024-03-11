@@ -5,8 +5,6 @@ internal sealed class WorkflowCommand : Command
     [SuppressMessage("ReSharper", "RedundantNullableFlowAttribute")]
     public override int Execute([NotNull] CommandContext context)
     {
-        ConsoleWriter.WriteHeader();
-
         if (BenchmarkRunner.IsDebugConfiguration(true))
         {
             return 1;
@@ -14,7 +12,7 @@ internal sealed class WorkflowCommand : Command
 
         var settings = new ListSettings { Exporters = "json" };
 
-        BenchmarkRunner.RunBenchmarks(ListSettings.BenchmarkTypes(), settings.BuildArgs());
+        BenchmarkRunner.RunBenchmarks(Reflection.GetBenchmarkTypes().ToArray(), settings.BuildArgs());
 
         CombineBenchmarkResults();
 

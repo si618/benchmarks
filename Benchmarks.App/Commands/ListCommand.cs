@@ -9,13 +9,6 @@ internal sealed class ListCommand : Command
 
         AnsiConsole.Cursor.Move(CursorDirection.Up, 1);
 
-        WriteBenchmarkList();
-
-        return 0;
-    }
-
-    private static void WriteBenchmarkList()
-    {
         var table = new Table();
 
         table.AddColumn("Benchmark", config => config.NoWrap = true);
@@ -38,5 +31,7 @@ internal sealed class ListCommand : Command
         }
 
         AnsiConsole.Write(table);
+
+        return 0;
     }
 }

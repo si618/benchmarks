@@ -4,10 +4,9 @@ internal static class Reflection
 {
     public static bool TryGetBenchmark(string name, out Benchmark benchmark)
     {
-        var found = typeof(BenchmarkBase)
-            .GetMembers()
-            .Where(m => m.GetCustomAttribute(typeof(BenchmarkInfoAttribute)) is not null)
+        var found = GetBenchmarkTypes()
             .Select(GetBenchmark)
+            .Where(type => type.Name == name)
             .FirstOrDefault(p =>
                 p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
                 p.Description.Equals(name, StringComparison.InvariantCultureIgnoreCase));
@@ -39,7 +38,8 @@ internal static class Reflection
     public static IEnumerable<Type> GetBenchmarkTypes() =>
         typeof(GuidPrimaryKey).Assembly
             .GetTypes()
-            .Where(m => m.GetCustomAttribute(typeof(BenchmarkInfoAttribute)) is not null);
+            .Where(m => m.GetCustomAttribute(typeof(BenchmarkInfoAttribute)) is not null)
+            .OrderBy(t => t.Name);
 
     public static IEnumerable<string> GetBenchmarkNames() =>
         GetBenchmarkTypes().Select(type => type.Name);

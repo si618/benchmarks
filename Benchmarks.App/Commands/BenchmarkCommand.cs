@@ -7,12 +7,12 @@ internal sealed class BenchmarkCommand : Command<ListSettings>
         [NotNull] CommandContext context,
         [NotNull] ListSettings settings)
     {
-        ConsoleWriter.WriteHeader();
-
         if (BenchmarkRunner.IsDebugConfiguration(settings.Debug))
         {
             return 1;
         }
+
+        AnsiConsole.WriteLine();
 
         var summaries = BenchmarkRunner.RunAndBuildSummaries(settings);
         var builder = new SpectreReportBuilder(summaries);
