@@ -82,7 +82,10 @@ internal sealed class SpectreReportBuilder(IEnumerable<Summary> summaries)
         }
 
         // Method
-        table.Columns[0].LeftAligned();
+        if (table.Columns.Count > 0)
+        {
+            table.Columns[0].LeftAligned();
+        }
 
         return headers;
     }
