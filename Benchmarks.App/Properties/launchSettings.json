@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Benchmarks.App": {
+      "commandName": "Project",
+      "commandLineArgs": "app"
+    }
+  }
+}

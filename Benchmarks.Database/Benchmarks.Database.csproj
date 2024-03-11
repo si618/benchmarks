@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Benchmarks.Database.Postgres\Benchmarks.Database.Postgres.csproj" />
+    <ProjectReference Include="..\Benchmarks.Database.SqlServer\Benchmarks.Database.SqlServer.csproj" />
+    <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Benchmarks.Core" />
+    <Using Include="Benchmarks.Database.Postgres" />
+    <Using Include="Benchmarks.Database.SqlServer" />
+    <Using Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
+  
+</Project>

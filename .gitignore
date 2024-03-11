@@ -1,0 +1,6 @@
+﻿*.DotSettings.user
+.idea
+.vs
+BenchmarkDotNet.Artifacts
+bin
+obj
