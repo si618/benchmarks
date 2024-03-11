@@ -107,7 +107,12 @@ internal sealed class SpectreReportBuilder(IEnumerable<Summary> summaries)
                 }
 
                 var index = Array.IndexOf(headers, column.Header);
-                columns[index] = $"[blue]{line[columnIndex]}[/]";
+                var value = line[columnIndex];
+                if (long.TryParse(value, out var longValue))
+                {
+                    value = longValue.ToString("N0");
+                }
+                columns[index] = $"[blue]{value}[/]";
             }
 
             table.AddRow(columns);
