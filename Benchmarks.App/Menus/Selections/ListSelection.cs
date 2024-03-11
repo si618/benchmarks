@@ -30,7 +30,7 @@ internal sealed record ListSelection : Selection
         // Would also be good to filter by keyboard input e.g. Esc to return to main menu
         prompt.AddChoice(new Benchmark("Exit", string.Empty));
 
-        var table = new Table { Border = TableBorder.None };
+        var table = new Table { Border = TableBorder.Simple };
         table.AddColumns("Benchmark", "Description", "Category");
         table.Columns[0].Width = padding.NamePad;
         table.Columns[1].Width = padding.DescriptionPad;
