@@ -7,20 +7,22 @@ public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
-            .Entity<ClusteredIndex>()
+        modelBuilder.Entity<ClusteredIndex>()
             .HasKey(e => e.Id);
-        modelBuilder
-            .Entity<ClusteredIndex>()
+        modelBuilder.Entity<ClusteredIndex>()
             .HasKey(p => p.Id)
             .IsClustered();
+        modelBuilder.Entity<ClusteredIndex>()
+            .Property(b => b.Decimal)
+            .HasColumnType("decimal(20, 5)");
 
-        modelBuilder
-            .Entity<NonClusteredIndex>()
+        modelBuilder.Entity<NonClusteredIndex>()
             .HasKey(e => e.Id);
-        modelBuilder
-            .Entity<NonClusteredIndex>()
+        modelBuilder.Entity<NonClusteredIndex>()
             .HasKey(p => p.Id)
             .IsClustered(false);
+        modelBuilder.Entity<NonClusteredIndex>()
+            .Property(b => b.Decimal)
+            .HasColumnType("decimal(20, 5)");
     }
 }
