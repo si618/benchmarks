@@ -29,11 +29,11 @@ app.Configure(config =>
 
 try
 {
+    var preFlight = new[] { "app", "benchmark", "workflow" };
     var isPreFlightCheckNeeded =
         (args.Length > 0 && !args.Any(arg => arg.StartsWith('-'))) &&
-        args.Any(arg =>
-            arg.Contains("app", StringComparison.OrdinalIgnoreCase) ||
-            arg.Contains("benchmark", StringComparison.OrdinalIgnoreCase));
+        args.Any(arg => preFlight
+            .Any(preFlight => arg.Contains(preFlight, StringComparison.OrdinalIgnoreCase)));
     if (isPreFlightCheckNeeded)
     {
         var isApp = args.Any(arg => arg.Contains("app", StringComparison.OrdinalIgnoreCase));
