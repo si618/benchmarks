@@ -24,7 +24,8 @@ internal static partial class BenchmarkExtensions
 
         table.AddRow("  [gray]Benchmark[/]", benchmark.Name.TrimEnd("Benchmark".ToCharArray()));
 
-        if (benchmark.Name != benchmark.Description)
+        if (benchmark.Name != benchmark.Description &&
+            !string.IsNullOrWhiteSpace(benchmark.Description))
         {
             table.AddRow("  [gray]Description[/]", benchmark.Description);
         }
@@ -34,7 +35,10 @@ internal static partial class BenchmarkExtensions
             table.AddRow("  [gray]Link[/]", benchmark.Link.ToString());
         }
 
-        table.AddRow("  [gray]Category[/]", benchmark.Category.Description());
+        if (benchmark.Category is not Category.None)
+        {
+            table.AddRow("  [gray]Category[/]", benchmark.Category.Description());
+        }
 
         return table;
     }
