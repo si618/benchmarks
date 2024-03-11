@@ -8,7 +8,10 @@ internal sealed record ExitSelection : Selection
 
     public override int Execute()
     {
-        ConsoleWriter.AnimateHeader();
+        if (ExitApp)
+        {
+            ConsoleWriter.AnimateHeader();
+        }
 
         return 0;
     }
