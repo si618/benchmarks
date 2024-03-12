@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Benchmarks.Database.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240311053152_Current")]
+    [Migration("20240312120335_Current")]
     partial class Current
     {
         /// <inheritdoc />
@@ -39,7 +39,8 @@ namespace Benchmarks.Database.Postgres.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(42)
+                        .HasColumnType("character varying(42)");
 
                     b.HasKey("Id")
                         .HasAnnotation("SqlServer:Clustered", true);
@@ -61,12 +62,35 @@ namespace Benchmarks.Database.Postgres.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(42)
+                        .HasColumnType("character varying(42)");
 
                     b.HasKey("Id")
                         .HasAnnotation("SqlServer:Clustered", false);
 
                     b.ToTable("NonClusteredIndexes");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.SimpleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateTimeUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(42)
+                        .HasColumnType("character varying(42)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SimpleEntities");
                 });
 #pragma warning restore 612, 618
         }

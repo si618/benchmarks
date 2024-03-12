@@ -16,7 +16,7 @@ namespace Benchmarks.Database.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(42)", maxLength: 42, nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -31,7 +31,7 @@ namespace Benchmarks.Database.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(42)", maxLength: 42, nullable: false),
                     DateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
@@ -39,6 +39,20 @@ namespace Benchmarks.Database.SqlServer.Migrations
                 {
                     table.PrimaryKey("PK_NonClusteredIndexes", x => x.Id)
                         .Annotation("SqlServer:Clustered", false);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SimpleEntities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(42)", maxLength: 42, nullable: false),
+                    DateTimeUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SimpleEntities", x => x.Id);
                 });
         }
 
@@ -50,6 +64,9 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "NonClusteredIndexes");
+
+            migrationBuilder.DropTable(
+                name: "SimpleEntities");
         }
     }
 }

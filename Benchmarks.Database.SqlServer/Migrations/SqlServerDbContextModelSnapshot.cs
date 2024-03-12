@@ -36,7 +36,8 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(42)
+                        .HasColumnType("nvarchar(42)");
 
                     b.HasKey("Id");
 
@@ -59,13 +60,36 @@ namespace Benchmarks.Database.SqlServer.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(42)
+                        .HasColumnType("nvarchar(42)");
 
                     b.HasKey("Id");
 
                     SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
 
                     b.ToTable("NonClusteredIndexes");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.SimpleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateTimeUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(42)
+                        .HasColumnType("nvarchar(42)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SimpleEntities");
                 });
 #pragma warning restore 612, 618
         }

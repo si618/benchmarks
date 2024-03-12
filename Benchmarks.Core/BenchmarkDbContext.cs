@@ -17,7 +17,6 @@ public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
             .IsClustered(false);
 
         modelBuilder.Entity<SimpleEntity>()
-            .HasKey(p => p.Id)
-            .IsClustered(false);
+            .HasKey(p => p.Id);
     }
 }
