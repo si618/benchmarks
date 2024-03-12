@@ -16,5 +16,5 @@ internal sealed record ExitSelection : Selection
         return 0;
     }
 
-    public bool ExitApp { get; set; }
+    public bool ExitApp { get; init; }
 }

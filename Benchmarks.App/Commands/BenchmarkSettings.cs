@@ -14,7 +14,7 @@ internal sealed class BenchmarkSettings : CommandSettings
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            return ValidationResult.Error($"Benchmark name required");
+            return ValidationResult.Error("Benchmark name required");
         }
 
         if (Reflection.GetBenchmarkTypes().All(type => type.Name != Name))

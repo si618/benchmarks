@@ -6,7 +6,7 @@ internal record Benchmark(
     Uri? Link = null,
     Category Category = Category.None);
 
-internal static partial class BenchmarkExtensions
+internal static class BenchmarkExtensions
 {
     internal static Table Markup(this Benchmark benchmark)
     {

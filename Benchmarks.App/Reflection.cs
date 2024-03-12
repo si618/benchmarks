@@ -40,9 +40,6 @@ internal static class Reflection
             .Where(m => m.GetCustomAttribute(typeof(BenchmarkInfoAttribute)) is not null)
             .OrderBy(t => t.Name);
 
-    public static IEnumerable<string> GetBenchmarkNames() =>
-        GetBenchmarkTypes().Select(type => type.Name);
-
     public static IEnumerable<IGrouping<Category, Benchmark>> GetBenchmarksByCategory() =>
         GetBenchmarkTypes()
             .Select(GetBenchmark)

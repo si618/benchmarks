@@ -19,7 +19,7 @@ internal static class BenchmarkRunner
         return RunAndBuildSummaries([type], args);
     }
 
-    public static IEnumerable<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
+    private static IEnumerable<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
     {
         AnsiConsole.Cursor.Move(CursorDirection.Up, 1);
 
@@ -44,6 +44,7 @@ internal static class BenchmarkRunner
 
     internal static bool IsDebugConfiguration(bool warnRatherThanFail = false)
     {
+        // ReSharper disable once RedundantAssignment
         var debug = false;
 
 #if DEBUG

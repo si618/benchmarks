@@ -31,9 +31,9 @@ try
 {
     var preFlight = new[] { "app", "benchmark", "workflow" };
     var isPreFlightCheckNeeded =
-        (args.Length > 0 && !args.Any(arg => arg.StartsWith('-'))) &&
+        args.Length > 0 && !args.Any(arg => arg.StartsWith('-')) &&
         args.Any(arg => preFlight
-            .Any(preFlight => arg.Contains(preFlight, StringComparison.OrdinalIgnoreCase)));
+            .Any(pf => arg.Contains(pf, StringComparison.OrdinalIgnoreCase)));
     if (isPreFlightCheckNeeded)
     {
         var isApp = args.Any(arg => arg.Contains("app", StringComparison.OrdinalIgnoreCase));
