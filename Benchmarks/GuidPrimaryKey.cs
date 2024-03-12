@@ -24,7 +24,7 @@ public class GuidPrimaryKey
             _ => throw new NotImplementedException()
         });
 
-    private TEntity[] CreateEntities<TEntity>() where TEntity : SimpleEntity, new()
+    private TEntity[] CreateEntities<TEntity>() where TEntity : SimpleEntityBase, new()
     {
         var entities = new TEntity[RowCount];
 
@@ -35,7 +35,7 @@ public class GuidPrimaryKey
             entities[row - 1] = new TEntity
             {
                 Id = Guid.NewGuid(),
-                Text = $"Row {row}",
+                Text = $"Row {row:N0}",
                 DateTimeUtc = now,
                 LongInteger = now.Ticks
             };
@@ -56,7 +56,7 @@ public class GuidPrimaryKey
     {
         await using var dbContext = CreateDbContext(DbServer.Postgres);
         await dbContext.Database.MigrateAsync();
-        await dbContext.ClusteredIndexes.AddRangeAsync(CreateEntities<ClusteredIndex>());
+        await dbContext.SimpleEntities.AddRangeAsync(CreateEntities<SimpleEntity>());
         await dbContext.SaveChangesAsync();
     }
 

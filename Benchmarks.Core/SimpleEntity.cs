@@ -1,12 +1,16 @@
 ﻿namespace Benchmarks.Core;
 
-public abstract class SimpleEntity
+using System.ComponentModel.DataAnnotations;
+
+public abstract class SimpleEntityBase
 {
     public Guid Id { get; init; } = Guid.Empty;
-    public string Text { get; set; } = string.Empty;
-    public DateTimeOffset DateTimeUtc { get; set; } = DateTimeOffset.UtcNow;
-    public long LongInteger { get; set; }
+    [MaxLength(42)]
+    public string Text { get; init; } = string.Empty;
+    public DateTimeOffset DateTimeUtc { get; init; } = DateTimeOffset.UtcNow;
+    public long LongInteger { get; init; }
 }
 
-public class ClusteredIndex : SimpleEntity;
-public class NonClusteredIndex : SimpleEntity;
+public class SimpleEntity : SimpleEntityBase;
+public class ClusteredIndex : SimpleEntityBase;
+public class NonClusteredIndex : SimpleEntityBase;
