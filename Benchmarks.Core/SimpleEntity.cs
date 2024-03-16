@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Core.Domain;
+﻿namespace Benchmarks.Core;
 
 public abstract class SimpleEntityBase
 {
