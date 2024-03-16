@@ -13,10 +13,4 @@
     <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Benchmarks.Core" />
-    <Using Include="Microsoft.EntityFrameworkCore" />
-    <Using Include="Microsoft.EntityFrameworkCore.Design" />
-  </ItemGroup>
-
 </Project>

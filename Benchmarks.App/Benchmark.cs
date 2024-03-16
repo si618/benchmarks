@@ -2,9 +2,17 @@
 
 internal record Benchmark(
     string Name,
-    string Description = "",
-    Uri? Link = null,
-    Category Category = Category.None);
+    string? Description = null,
+    Uri[]? Links = null,
+    Category Category = Category.None)
+{
+    public string Name { get; init; } = Name;
+    public string Description { get; init; } = Description ?? string.Empty;
+    public Uri[] Links { get; init; } = Links is null
+        ? []
+        : Links.Select(link => new Uri($"{link}", UriKind.Absolute)).ToArray();
+    public Category Category { get; init; } = Category;
+}
 
 internal static class BenchmarkExtensions
 {
@@ -27,9 +35,9 @@ internal static class BenchmarkExtensions
             table.AddRow("  [gray]Description[/]", benchmark.Description);
         }
 
-        if (benchmark.Link is not null)
+        foreach (var link in benchmark.Links)
         {
-            table.AddRow("  [gray]Link[/]", benchmark.Link.ToString());
+            table.AddRow("  [gray]Link[/]", link.ToString());
         }
 
         if (benchmark.Category is not Category.None)

@@ -11,11 +11,4 @@
     <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Benchmarks.Core" />
-    <Using Include="Benchmarks.Database.Postgres" />
-    <Using Include="Benchmarks.Database.SqlServer" />
-    <Using Include="Microsoft.EntityFrameworkCore" />
-  </ItemGroup>
-  
 </Project>

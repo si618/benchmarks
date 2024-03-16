@@ -1,0 +1,17 @@
+﻿global using BenchmarkDotNet.Loggers;
+global using BenchmarkDotNet.Reports;
+global using BenchmarkDotNet.Running;
+global using Benchmarks.App;
+global using Benchmarks.App.Commands;
+global using Benchmarks.App.Menus;
+global using Benchmarks.App.Menus.Selections;
+global using Benchmarks.Core;
+global using DotNet.Testcontainers.Builders;
+global using Lolcat;
+global using Spectre.Console;
+global using Spectre.Console.Cli;
+global using Spectre.Console.Rendering;
+global using System.ComponentModel;
+global using System.Reflection;
+global using System.Text;
+global using System.Text.Json.Nodes;

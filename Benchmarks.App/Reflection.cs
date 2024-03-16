@@ -30,7 +30,7 @@ internal static class Reflection
         return new Benchmark(
             memberInfo.Name,
             attribute.Description,
-            attribute.Link,
+            attribute.Links,
             attribute.Category);
     }
 

@@ -44,5 +44,7 @@ internal static class ConsoleWriter
         AnsiConsole.Cursor.Hide();
 
         Console.ReadKey();
+
+        AnsiConsole.Cursor.Show();
     }
 }

@@ -20,26 +20,5 @@
     <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="BenchmarkDotNet.Loggers" />
-    <Using Include="BenchmarkDotNet.Reports" />
-    <Using Include="BenchmarkDotNet.Running" />
-    <Using Include="Benchmarks.App" />
-    <Using Include="Benchmarks.App.Commands" />
-    <Using Include="Benchmarks.App.Menus" />
-    <Using Include="Benchmarks.App.Menus.Selections" />
-    <Using Include="Benchmarks.Core" />
-    <Using Include="DotNet.Testcontainers.Builders" />
-    <Using Include="Lolcat" />
-    <Using Include="Spectre.Console" />
-    <Using Include="Spectre.Console.Cli" />
-    <Using Include="Spectre.Console.Rendering" />
-    <Using Include="System.ComponentModel" />
-    <Using Include="System.Diagnostics.CodeAnalysis" />
-    <Using Include="System.Reflection" />
-    <Using Include="System.Text" />
-    <Using Include="System.Text.Json.Nodes" />
-    <Using Include="System.Text.RegularExpressions" />
-  </ItemGroup>
 
 </Project>

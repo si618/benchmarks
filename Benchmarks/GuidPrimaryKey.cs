@@ -1,8 +1,11 @@
 ﻿namespace Benchmarks;
 
 [BenchmarkInfo(
-    "Test performance of GUID based primary keys",
-    "https://blog.novanet.no/careful-with-guid-as-clustered-index",
+    description: "Test performance of GUID based primary keys",
+    links: [
+        "https://youtu.be/n17U7ntLMt4?si=lFUX24PlGOQrtIKR",
+        "https://blog.novanet.no/careful-with-guid-as-clustered-index"
+    ],
     Category.Database)]
 public class GuidPrimaryKey
 {
@@ -24,11 +27,11 @@ public class GuidPrimaryKey
             _ => throw new NotImplementedException()
         });
 
-    private TEntity[] CreateEntities<TEntity>() where TEntity : SimpleEntityBase, new()
+    private TEntity[] CreateEntities<TEntity>(int rowCount) where TEntity : SimpleEntityBase, new()
     {
-        var entities = new TEntity[RowCount];
+        var entities = new TEntity[rowCount];
 
-        for (var row = 1; row <= RowCount; row++)
+        for (var row = 1; row <= rowCount; row++)
         {
             var now = DateTimeOffset.UtcNow;
 
@@ -56,7 +59,8 @@ public class GuidPrimaryKey
     {
         await using var dbContext = CreateDbContext(DbServer.Postgres);
         await dbContext.Database.MigrateAsync();
-        await dbContext.SimpleEntities.AddRangeAsync(CreateEntities<SimpleEntity>());
+        var entities = CreateEntities<SimpleEntity>(RowCount);
+        await dbContext.SimpleEntities.AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }
 
@@ -65,7 +69,8 @@ public class GuidPrimaryKey
     {
         await using var dbContext = CreateDbContext(DbServer.SqlServer);
         await dbContext.Database.MigrateAsync();
-        await dbContext.ClusteredIndexes.AddRangeAsync(CreateEntities<ClusteredIndex>());
+        var entities = CreateEntities<ClusteredIndex>(RowCount);
+        await dbContext.ClusteredIndexes.AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }
 
@@ -74,7 +79,8 @@ public class GuidPrimaryKey
     {
         await using var dbContext = CreateDbContext(DbServer.SqlServer);
         await dbContext.Database.MigrateAsync();
-        await dbContext.NonClusteredIndexes.AddRangeAsync(CreateEntities<NonClusteredIndex>());
+        var entities = CreateEntities<NonClusteredIndex>(RowCount);
+        await dbContext.NonClusteredIndexes.AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }
 

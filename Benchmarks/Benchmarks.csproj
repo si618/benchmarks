@@ -12,13 +12,4 @@
     <ProjectReference Include="..\Benchmarks.Database\Benchmarks.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="BenchmarkDotNet.Attributes" />
-    <Using Include="Benchmarks.Core" />
-    <Using Include="Benchmarks.Database" />
-    <Using Include="Microsoft.EntityFrameworkCore" />
-    <Using Include="Testcontainers.MsSql" />
-    <Using Include="Testcontainers.PostgreSql" />
-  </ItemGroup>
-
 </Project>
