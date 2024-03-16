@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710576499500,
+  "lastUpdate": 1710583197873,
   "repoUrl": "https://github.com/si618/benchmarks",
   "entries": {
     "Benchmarks": [
@@ -480,6 +480,66 @@ window.BENCHMARK_DATA = {
             "value": 436527470.6666667,
             "unit": "ns",
             "range": "± 3408135.8675043597"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "committer": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "distinct": true,
+          "id": "e86d7f9484c4b453588e2ec72f6faa9f38cd18ff",
+          "message": "dotnet format",
+          "timestamp": "2024-03-16T20:26:06+10:30",
+          "tree_id": "4fa15814e382c8f76b6249d788db8874c48077a8",
+          "url": "https://github.com/si618/benchmarks/commit/e86d7f9484c4b453588e2ec72f6faa9f38cd18ff"
+        },
+        "date": 1710583197361,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "InsertGuidPrimaryKeyPostgres",
+            "value": 47579478.78888889,
+            "unit": "ns",
+            "range": "± 991664.3021569259"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithClusteredIndexSqlServer(RowCount: 1000)",
+            "value": 41389284.868421055,
+            "unit": "ns",
+            "range": "± 905150.5812272932"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer(RowCount: 1000)",
+            "value": 44597416.43103448,
+            "unit": "ns",
+            "range": "± 1293104.4800151729"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyPostgres(RowCount: 10000)",
+            "value": 352305497.38461536,
+            "unit": "ns",
+            "range": "± 5575790.364929285"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithClusteredIndexSqlServer(RowCount: 10000)",
+            "value": 417520084.53846157,
+            "unit": "ns",
+            "range": "± 5294480.255389973"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer(RowCount: 10000)",
+            "value": 439260038.2,
+            "unit": "ns",
+            "range": "± 6720924.429742206"
           }
         ]
       }
