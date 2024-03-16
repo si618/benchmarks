@@ -27,7 +27,8 @@ public class GuidPrimaryKey
             _ => throw new NotImplementedException()
         });
 
-    private TEntity[] CreateEntities<TEntity>(int rowCount) where TEntity : SimpleEntityBase, new()
+    private static TEntity[] CreateEntities<TEntity>(int rowCount)
+        where TEntity : SimpleEntityBase, new()
     {
         var entities = new TEntity[rowCount];
 
