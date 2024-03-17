@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710583197873,
+  "lastUpdate": 1710665537189,
   "repoUrl": "https://github.com/si618/benchmarks",
   "entries": {
     "Benchmarks": [
@@ -540,6 +540,114 @@ window.BENCHMARK_DATA = {
             "value": 439260038.2,
             "unit": "ns",
             "range": "± 6720924.429742206"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "committer": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "distinct": true,
+          "id": "e517e573062f06cbc616f7438f0344c5825408d8",
+          "message": "Refactor migrations and entities",
+          "timestamp": "2024-03-17T19:14:53+10:30",
+          "tree_id": "e0a4e77fb22f12b9516741bf76e39d298370e6ad",
+          "url": "https://github.com/si618/benchmarks/commit/e517e573062f06cbc616f7438f0344c5825408d8"
+        },
+        "date": 1710665536857,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "InsertGuidPrimaryKeyPostgres",
+            "value": 46939553.0378788,
+            "unit": "ns",
+            "range": "± 858834.6364806882"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithClusteredIndexSqlServer(RowCount: 1000)",
+            "value": 42988049.788888894,
+            "unit": "ns",
+            "range": "± 787969.4020252753"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer(RowCount: 1000)",
+            "value": 48379065.93081762,
+            "unit": "ns",
+            "range": "± 1998401.219572129"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyPostgres(RowCount: 10000)",
+            "value": 341855422.8333333,
+            "unit": "ns",
+            "range": "± 5688172.639982887"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithClusteredIndexSqlServer(RowCount: 10000)",
+            "value": 436249128.9230769,
+            "unit": "ns",
+            "range": "± 6055676.505007244"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer(RowCount: 10000)",
+            "value": 455065365.875,
+            "unit": "ns",
+            "range": "± 8698156.927858252"
+          },
+          {
+            "name": "SaveHardDelete",
+            "value": 18210.544792762168,
+            "unit": "ns",
+            "range": "± 84.94423261257441"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveSoftDelete(RowCount: 1000, DbServer: Postgres)",
+            "value": 18791.98026529948,
+            "unit": "ns",
+            "range": "± 90.42847448485186"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveHardDelete(RowCount: 1000, DbServer: SqlServer)",
+            "value": 21291.1155465933,
+            "unit": "ns",
+            "range": "± 128.32607309581593"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveSoftDelete(RowCount: 1000, DbServer: SqlServer)",
+            "value": 21679.465376790366,
+            "unit": "ns",
+            "range": "± 150.07428264331222"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveHardDelete(RowCount: 10000, DbServer: Postgres)",
+            "value": 18596.6184753418,
+            "unit": "ns",
+            "range": "± 194.80855210483676"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveSoftDelete(RowCount: 10000, DbServer: Postgres)",
+            "value": 18598.306169782365,
+            "unit": "ns",
+            "range": "± 165.69978079855898"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveHardDelete(RowCount: 10000, DbServer: SqlServer)",
+            "value": 21011.54323871319,
+            "unit": "ns",
+            "range": "± 101.72309504717406"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.SaveSoftDelete(RowCount: 10000, DbServer: SqlServer)",
+            "value": 21352.335915120442,
+            "unit": "ns",
+            "range": "± 225.79714955880456"
           }
         ]
       }
