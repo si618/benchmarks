@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
-    <ProjectReference Include="..\Benchmarks.Database\Benchmarks.Database.csproj" />
   </ItemGroup>
 
 </Project>

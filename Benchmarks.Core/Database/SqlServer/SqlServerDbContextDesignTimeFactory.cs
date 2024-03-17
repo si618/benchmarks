@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Database.SqlServer;
+﻿namespace Benchmarks.Core.Database.SqlServer;
 
 /// <summary>Create design time db context to enable ef migrations</summary>
 public class SqlServerDbContextDesignTimeFactory : IDesignTimeDbContextFactory<SqlServerDbContext>

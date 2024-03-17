@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.App.Commands;
 
+using Core.Benchmarking;
+
 internal sealed class ListCommand : Command
 {
     public override int Execute(CommandContext context)

@@ -5,7 +5,6 @@ global using Benchmarks.App;
 global using Benchmarks.App.Commands;
 global using Benchmarks.App.Menus;
 global using Benchmarks.App.Menus.Selections;
-global using Benchmarks.Core;
 global using DotNet.Testcontainers.Builders;
 global using Lolcat;
 global using Spectre.Console;

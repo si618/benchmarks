@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Core;
+﻿namespace Benchmarks.Core.Database;
 
 public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
 {

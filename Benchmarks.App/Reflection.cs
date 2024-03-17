@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.App;
 
+using Core.Benchmarking;
+
 internal static class Reflection
 {
     public static bool TryGetBenchmark(string name, out Benchmark benchmark)

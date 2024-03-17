@@ -9,7 +9,7 @@
 Push-Location .
 Set-Location $PSScriptRoot
 
-dotnet build --configuration Release --no-incremental
+dotnet build --configuration Release #--no-incremental
 dotnet run --configuration Release --project Benchmarks.App
 
 Pop-Location

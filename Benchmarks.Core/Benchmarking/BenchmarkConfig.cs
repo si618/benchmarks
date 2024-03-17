@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Core;
+﻿namespace Benchmarks.Core.Benchmarking;
 
 public sealed class BenchmarkConfig : ManualConfig
 {

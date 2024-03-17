@@ -4,16 +4,16 @@ using Core.Benchmarking;
 using Core.Database;
 
 [BenchmarkInfo(
-    description: "Test performance of GUID based primary keys",
-    links: [
-        "https://youtu.be/n17U7ntLMt4?si=lFUX24PlGOQrtIKR",
-        "https://blog.novanet.no/careful-with-guid-as-clustered-index"
-    ],
+    description: "Test performance of soft delete operations",
+    links: ["https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core"],
     Category.Database)]
-public class GuidPrimaryKey
+public class SoftDelete
 {
     [Params(1_000, 10_000)]
     public int RowCount { get; set; }
+
+    [Params(DbServer.Postgres, DbServer.SqlServer)]
+    public DbServer DbServer { get; set; }
 
     private readonly MsSqlContainer _sqlServerContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:latest")
@@ -38,9 +38,9 @@ public class GuidPrimaryKey
     }
 
     [Benchmark]
-    public async Task InsertGuidPrimaryKeyPostgres()
+    public async Task SaveHardDelete()
     {
-        await using var dbContext = CreateDbContext(DbServer.Postgres);
+        await using var dbContext = CreateDbContext(DbServer);
         await dbContext.Database.MigrateAsync();
         var entities = SimpleEntity.Create<SimpleEntity>(RowCount);
         await dbContext.SimpleEntities.AddRangeAsync(entities);
@@ -48,22 +48,12 @@ public class GuidPrimaryKey
     }
 
     [Benchmark]
-    public async Task InsertGuidPrimaryKeyWithClusteredIndexSqlServer()
+    public async Task SaveSoftDelete()
     {
-        await using var dbContext = CreateDbContext(DbServer.SqlServer);
+        await using var dbContext = CreateDbContext(DbServer);
         await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<ClusteredIndex>(RowCount);
-        await dbContext.ClusteredIndexes.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
-    }
-
-    [Benchmark]
-    public async Task InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer()
-    {
-        await using var dbContext = CreateDbContext(DbServer.SqlServer);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<NonClusteredIndex>(RowCount);
-        await dbContext.NonClusteredIndexes.AddRangeAsync(entities);
+        var entities = SimpleEntity.Create<SoftDeleted>(RowCount);
+        await dbContext.SimpleEntities.AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }
 

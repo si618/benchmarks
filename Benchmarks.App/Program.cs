@@ -29,15 +29,9 @@ app.Configure(config =>
 
 try
 {
-    var preFlight = new[] { "app", "benchmark", "workflow" };
-    var isPreFlightCheckNeeded =
-        args.Length > 0 && !args.Any(arg => arg.StartsWith('-')) &&
-        args.Any(arg => preFlight
-            .Any(pf => arg.Contains(pf, StringComparison.OrdinalIgnoreCase)));
-    if (isPreFlightCheckNeeded)
+    if (PreFlightCheck.IsNeeded(args))
     {
-        var isApp = args.Any(arg => arg.Contains("app", StringComparison.OrdinalIgnoreCase));
-        PreFlightCheck.Run(isApp);
+        PreFlightCheck.Run(args);
     }
 
     return await app.RunAsync(args);

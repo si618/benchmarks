@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Database;
+﻿namespace Benchmarks.Core.Database;
 
 public enum DbServer
 {

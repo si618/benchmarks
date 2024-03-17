@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.App.Menus.Selections;
 
+using Core.Benchmarking;
+
 internal sealed record ListSelection : Selection
 {
     internal ListSelection(int order) : base("List benchmarks", order)

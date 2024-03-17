@@ -9,26 +9,27 @@
 Push-Location .
 Set-Location $PSScriptRoot
 
+$project = ".\Benchmarks.Core\Benchmarks.Core.csproj"
+
 function CreateMigration {
     param(
         [Parameter(Mandatory=$true)]
         [string]$dbServer
     )
-    $name = "Benchmarks.Database.$dbServer"
-    $project = ".\$name\$name.csproj"
     $context = "$dbServer" + "DbContext"
-    $path = ".\$name\Migrations"
+    $path = ".\Benchmarks.Core\Database\$dbServer\Migrations"
     if (Test-Path $path) {
         Write-Host "Removing existing $dbServer migrations"
         Remove-Item -Recurse -Force -Path $path
     }
     Write-Host "Generating migrations for $dbServer"
-    dotnet ef migrations add Current -p $project -c $context
-    Write-Host "Formatting $dbServer project"
-    dotnet format $project
+    dotnet ef migrations add Current -p $project -c $context -o $path
 }
 
 CreateMigration -dbServer Postgres
 CreateMigration -dbServer SqlServer
+
+Write-Host "Invoking dotnet format to fix code-generated namespace ordering"
+dotnet format $project
 
 Pop-Location

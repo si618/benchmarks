@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.App;
 
+using Core.Benchmarking;
+
 internal record Benchmark(
     string Name,
     string? Description = null,

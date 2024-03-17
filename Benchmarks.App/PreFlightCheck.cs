@@ -2,11 +2,21 @@
 
 internal static class PreFlightCheck
 {
-    internal static void Run(bool isApp)
+    private static readonly string[] NeedsPreFlightCheck = ["app", "benchmark", "workflow"];
+
+    internal static bool IsNeeded(string[] args) =>
+        args.Length > 0 &&                             // Not needed when showing app details
+        args.All(arg => !arg.StartsWith('-')) && // Not needed for help or version options
+        args.Any(arg => NeedsPreFlightCheck      // Not needed for info or list commands
+            .Any(pf => arg.Contains(pf, StringComparison.OrdinalIgnoreCase)));
+
+    internal static void Run(IEnumerable<string> args)
     {
+        var isApp = args.Any(arg => arg.Contains("app", StringComparison.OrdinalIgnoreCase));
+
         ConsoleWriter.WriteHeader();
 
-        AnsiConsole.MarkupLine("[gray]Running pre-flight check to verify test containers can start[/]");
+        AnsiConsole.MarkupLine("[gray]Running pre-flight check to verify test containers build[/]");
         AnsiConsole.WriteLine();
 
         // Would be nice if ContainerBuilder.Validate method was public
@@ -22,7 +32,7 @@ internal static class PreFlightCheck
 
         if (isApp)
         {
-            Thread.Sleep(TimeSpan.FromSeconds(1.66));
+            Thread.Sleep(TimeSpan.FromSeconds(1.42));
         }
     }
 }
