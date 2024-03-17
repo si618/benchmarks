@@ -18,12 +18,14 @@ function CreateMigration {
     )
     $context = "$dbServer" + "DbContext"
     $path = ".\Benchmarks.Core\Database\$dbServer\Migrations"
+    $name = "Current$dbServer"
     if (Test-Path $path) {
-        Write-Host "Removing existing $dbServer migrations"
+        Write-Host "Removing existing migrations for $dbServer"
         Remove-Item -Recurse -Force -Path $path
     }
+    $outputDir = "Database\$dbServer\Migrations"
     Write-Host "Generating migrations for $dbServer"
-    dotnet ef migrations add Current -p $project -c $context -o $path
+    dotnet ef migrations add $name -p $project -c $context -o $outputDir
 }
 
 CreateMigration -dbServer Postgres

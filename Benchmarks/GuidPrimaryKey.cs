@@ -1,7 +1,6 @@
 ﻿namespace Benchmarks;
 
-using Core.Benchmarking;
-using Core.Database;
+using GuidPrimaryKeyEntity = Benchmarks.Core.Entities.GuidPrimaryKey;
 
 [BenchmarkInfo(
     description: "Test performance of GUID based primary keys",
@@ -22,14 +21,6 @@ public class GuidPrimaryKey
         .WithImage("postgres:latest")
         .Build();
 
-    private BenchmarkDbContext CreateDbContext(DbServer server) =>
-        BenchmarkDbContextFactory.Create(server, server switch
-        {
-            DbServer.Postgres => _postgresContainer.GetConnectionString(),
-            DbServer.SqlServer => _sqlServerContainer.GetConnectionString(),
-            _ => throw new NotImplementedException()
-        });
-
     [GlobalSetup]
     public async Task Setup()
     {
@@ -40,31 +31,28 @@ public class GuidPrimaryKey
     [Benchmark]
     public async Task InsertGuidPrimaryKeyPostgres()
     {
-        await using var dbContext = CreateDbContext(DbServer.Postgres);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<SimpleEntity>(RowCount);
-        await dbContext.SimpleEntities.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        var repository = new GuidPrimaryKeyRepository(
+            DbServer.Postgres,
+            _postgresContainer.GetConnectionString());
+        await repository.InsertEntitiesAsync<GuidPrimaryKeyEntity>(RowCount);
     }
 
     [Benchmark]
     public async Task InsertGuidPrimaryKeyWithClusteredIndexSqlServer()
     {
-        await using var dbContext = CreateDbContext(DbServer.SqlServer);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<ClusteredIndex>(RowCount);
-        await dbContext.ClusteredIndexes.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        var repository = new GuidPrimaryKeyRepository(
+            DbServer.SqlServer,
+            _sqlServerContainer.GetConnectionString());
+        await repository.InsertEntitiesAsync<ClusteredIndex>(RowCount);
     }
 
     [Benchmark]
     public async Task InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer()
     {
-        await using var dbContext = CreateDbContext(DbServer.SqlServer);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<NonClusteredIndex>(RowCount);
-        await dbContext.NonClusteredIndexes.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        var repository = new GuidPrimaryKeyRepository(
+            DbServer.SqlServer,
+            _sqlServerContainer.GetConnectionString());
+        await repository.InsertEntitiesAsync<NonClusteredIndex>(RowCount);
     }
 
     [GlobalCleanup]

@@ -17,7 +17,7 @@ public static class BenchmarkDbContextFactory
                 return new SqlServerDbContext(sqlServerOptions.Options);
 
             default:
-                throw new NotImplementedException();
+                throw new InvalidEnumArgumentException();
         }
     }
 }

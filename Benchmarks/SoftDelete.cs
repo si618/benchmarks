@@ -1,8 +1,5 @@
 ﻿namespace Benchmarks;
 
-using Core.Benchmarking;
-using Core.Database;
-
 [BenchmarkInfo(
     description: "Test performance of soft delete operations",
     links: ["https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core"],
@@ -27,7 +24,7 @@ public class SoftDelete
         {
             DbServer.Postgres => _postgresContainer.GetConnectionString(),
             DbServer.SqlServer => _sqlServerContainer.GetConnectionString(),
-            _ => throw new NotImplementedException()
+            _ => throw new InvalidEnumArgumentException()
         });
 
     [GlobalSetup]
@@ -41,20 +38,12 @@ public class SoftDelete
     public async Task SaveHardDelete()
     {
         await using var dbContext = CreateDbContext(DbServer);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<SimpleEntity>(RowCount);
-        await dbContext.SimpleEntities.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
     }
 
     [Benchmark]
     public async Task SaveSoftDelete()
     {
         await using var dbContext = CreateDbContext(DbServer);
-        await dbContext.Database.MigrateAsync();
-        var entities = SimpleEntity.Create<SoftDeleted>(RowCount);
-        await dbContext.SimpleEntities.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
     }
 
     [GlobalCleanup]
