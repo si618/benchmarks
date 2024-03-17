@@ -9,10 +9,10 @@ Performance benchmarks for various things of interest
 
 ```bash
 > dotnet --list-sdks
-8.0.201 [/usr/share/dotnet/sdk]
+8.0.203 [/usr/share/dotnet/sdk]
 
 > git --version
-git version 2.43.0
+git version 2.44.0
 
 > git clone https://github.com/si618/benchmarks.git
 Cloning into 'benchmarks'...
