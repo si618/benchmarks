@@ -2,9 +2,9 @@
 
 public static class BenchmarkDbContextFactory
 {
-    public static BenchmarkDbContext Create(DbServer server, string connectionString)
+    public static BenchmarkDbContext Create(DbServer dbServer, string connectionString)
     {
-        switch (server)
+        switch (dbServer)
         {
             case DbServer.Postgres:
                 var postgresOptions = new DbContextOptionsBuilder<PostgresDbContext>();
@@ -17,7 +17,7 @@ public static class BenchmarkDbContextFactory
                 return new SqlServerDbContext(sqlServerOptions.Options);
 
             default:
-                throw new InvalidEnumArgumentException();
+                throw dbServer.InvalidEnumArgumentException();
         }
     }
 }
