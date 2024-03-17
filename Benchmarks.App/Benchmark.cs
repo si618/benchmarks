@@ -29,7 +29,7 @@ internal static class BenchmarkExtensions
         table.AddColumn(new TableColumn("-").PadRight(3));
         table.AddColumn("-");
 
-        table.AddRow("  [gray]Benchmark[/]", benchmark.Name.TrimEnd("Benchmark".ToCharArray()));
+        table.AddRow("  [gray]Benchmark[/]", benchmark.Name);
 
         if (benchmark.Name != benchmark.Description &&
             !string.IsNullOrWhiteSpace(benchmark.Description))
