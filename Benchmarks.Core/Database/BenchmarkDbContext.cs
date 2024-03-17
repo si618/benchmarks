@@ -2,30 +2,38 @@
 
 public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
 {
-    public DbSet<ClusteredIndex> ClusteredIndexes { get; set; } = null!;
+    // GuidPrimaryKey Benchmarks
+    public DbSet<GuidPrimaryKeyWithClusteredIndex> ClusteredIndexes { get; set; } = null!;
     public DbSet<GuidPrimaryKey> GuidPrimaryKeys { get; set; } = null!;
-    public DbSet<HardDeleted> HardDeletes { get; set; } = null!;
-    public DbSet<NonClusteredIndex> NonClusteredIndexes { get; set; } = null!;
-    public DbSet<SoftDeleted> SoftDeletes { get; set; } = null!;
+    public DbSet<GuidPrimaryKeyWithNonClusteredIndex> NonClusteredIndexes { get; set; } = null!;
+    // SoftDelete Benchmarks
+    public DbSet<HardDelete> HardDeletes { get; set; } = null!;
+    public DbSet<SoftDeleteWithFilter> SoftDeleteWithFilters { get; set; } = null!;
+    public DbSet<SoftDeleteWithoutFilter> SoftDeleteWithoutFilters { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ClusteredIndex>()
-            .HasKey(p => p.Id)
+        // GuidPrimaryKey Benchmarks
+        modelBuilder.Entity<GuidPrimaryKeyWithClusteredIndex>()
+            .HasKey(e => e.Id)
             .IsClustered();
-
         modelBuilder.Entity<GuidPrimaryKey>()
-            .HasKey(p => p.Id);
-
-        modelBuilder.Entity<HardDeleted>()
-            .HasKey(p => p.Id);
-
-        modelBuilder.Entity<NonClusteredIndex>()
-            .HasKey(p => p.Id)
+            .HasKey(e => e.Id);
+        modelBuilder.Entity<GuidPrimaryKeyWithNonClusteredIndex>()
+            .HasKey(e => e.Id)
             .IsClustered(false);
 
-        modelBuilder.Entity<SoftDeleted>()
+        // SoftDelete Benchmarks
+        modelBuilder.Entity<HardDelete>()
+            .HasKey(e => e.Id);
+        modelBuilder.Entity<SoftDeleteWithFilter>()
+            .HasQueryFilter(e => !e.IsDeleted)
             .HasKey(p => p.Id);
-
+        modelBuilder.Entity<SoftDeleteWithFilter>()
+            .HasIndex(e => e.IsDeleted)
+            .HasFilter("IsDeleted = 0");
+        modelBuilder.Entity<SoftDeleteWithoutFilter>()
+            .HasQueryFilter(e => !e.IsDeleted)
+            .HasKey(p => p.Id);
     }
 }

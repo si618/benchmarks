@@ -71,7 +71,7 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoftDeletes",
+                name: "SoftDeleteWithFilters",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -84,8 +84,31 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoftDeletes", x => x.Id);
+                    table.PrimaryKey("PK_SoftDeleteWithFilters", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "SoftDeleteWithoutFilters",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    LongInteger = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SoftDeleteWithoutFilters", x => x.Id);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SoftDeleteWithFilters_IsDeleted",
+                table: "SoftDeleteWithFilters",
+                column: "IsDeleted",
+                filter: "IsDeleted = 0");
         }
 
         /// <inheritdoc />
@@ -104,7 +127,10 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
                 name: "NonClusteredIndexes");
 
             migrationBuilder.DropTable(
-                name: "SoftDeletes");
+                name: "SoftDeleteWithFilters");
+
+            migrationBuilder.DropTable(
+                name: "SoftDeleteWithoutFilters");
         }
     }
 }

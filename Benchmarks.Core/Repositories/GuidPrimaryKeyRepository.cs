@@ -2,8 +2,7 @@
 
 public sealed class GuidPrimaryKeyRepository(DbServer dbServer, string connectionString)
 {
-    private static TEntity[] CreateEntities<TEntity>(int rowCount)
-        where TEntity : GuidPrimaryKeyBase, new()
+    private static TEntity[] Create<TEntity>(int rowCount) where TEntity : GuidPrimaryKeyBase, new()
     {
         var entities = new TEntity[rowCount];
 
@@ -23,12 +22,11 @@ public sealed class GuidPrimaryKeyRepository(DbServer dbServer, string connectio
         return entities;
     }
 
-    public async Task InsertEntitiesAsync<TEntity>(int rowCount)
-        where TEntity : GuidPrimaryKeyBase, new()
+    public async Task InsertAsync<TEntity>(int rowCount) where TEntity : GuidPrimaryKeyBase, new()
     {
         await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
         await dbContext.Database.MigrateAsync();
-        var entities = CreateEntities<TEntity>(rowCount);
+        var entities = Create<TEntity>(rowCount);
         await dbContext.Set<TEntity>().AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }

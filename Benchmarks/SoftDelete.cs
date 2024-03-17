@@ -1,7 +1,7 @@
 ﻿namespace Benchmarks;
 
 [BenchmarkInfo(
-    description: "Benchmark soft verses hard deletes",
+    description: "Benchmark hard verses soft deletes",
     links: ["https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core"],
     Category.Database)]
 public class SoftDelete
@@ -19,31 +19,49 @@ public class SoftDelete
         .WithImage("postgres:latest")
         .Build();
 
-    private BenchmarkDbContext CreateDbContext(DbServer server) =>
-        BenchmarkDbContextFactory.Create(server, server switch
-        {
-            DbServer.Postgres => _postgresContainer.GetConnectionString(),
-            DbServer.SqlServer => _sqlServerContainer.GetConnectionString(),
-            _ => throw new InvalidEnumArgumentException()
-        });
+    private SoftDeleteRepository CreateRepository() => new(DbServer, DbServer switch
+    {
+        DbServer.Postgres => _postgresContainer.GetConnectionString(),
+        DbServer.SqlServer => _sqlServerContainer.GetConnectionString(),
+        _ => throw DbServer.InvalidEnumArgumentException()
+    });
 
     [GlobalSetup]
     public async Task Setup()
     {
         await _postgresContainer.StartAsync();
         await _sqlServerContainer.StartAsync();
+        // TODO Register DI for SoftDeleteInterceptor - Will require refactoring
+        // services.AddSingleton<SoftDeleteInterceptor>();
+        // services.AddDbContext<BenchmarkDbContext>(
+        //     (serviceProvider, options) => options
+        //         .UseSqlServer(_sqlServerContainer.GetConnectionString())
+        //         .AddInterceptors(
+        //         serviceProvider.GetRequiredService<SoftDeleteInterceptor>()));
     }
 
     [Benchmark]
-    public async Task SaveHardDelete()
+    public async Task HardDelete()
     {
-        await using var dbContext = CreateDbContext(DbServer);
+        var repository = CreateRepository();
+        await repository.InsertAsync<HardDelete>(RowCount);
+        await repository.HardDeleteAsync(RowCount);
     }
 
     [Benchmark]
-    public async Task SaveSoftDelete()
+    public async Task SoftDeleteWithQueryFilter()
     {
-        await using var dbContext = CreateDbContext(DbServer);
+        var repository = CreateRepository();
+        await repository.InsertAsync<SoftDeleteWithFilter>(RowCount);
+        await repository.SoftDeleteAsync<SoftDeleteWithFilter>(RowCount);
+    }
+
+    [Benchmark]
+    public async Task SoftDeleteWithoutQueryFilter()
+    {
+        var repository = CreateRepository();
+        await repository.InsertAsync<SoftDeleteWithoutFilter>(RowCount);
+        await repository.SoftDeleteAsync<SoftDeleteWithoutFilter>(RowCount);
     }
 
     [GlobalCleanup]

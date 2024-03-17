@@ -22,7 +22,28 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.ClusteredIndex", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GuidPrimaryKeys");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKeyWithClusteredIndex", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,51 +66,7 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
                     b.ToTable("ClusteredIndexes");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKey", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("CreatedAtUtc")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("LongInteger")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GuidPrimaryKeys");
-                });
-
-            modelBuilder.Entity("Benchmarks.Core.Entities.HardDeleted", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTimeOffset>("CreatedAtUtc")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("LongInteger")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HardDeletes");
-                });
-
-            modelBuilder.Entity("Benchmarks.Core.Entities.NonClusteredIndex", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKeyWithNonClusteredIndex", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +89,30 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
                     b.ToTable("NonClusteredIndexes");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleted", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.HardDelete", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HardDeletes");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithFilter", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -138,7 +138,39 @@ namespace Benchmarks.Core.Database.SqlServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SoftDeletes");
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
+                    b.ToTable("SoftDeleteWithFilters");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithoutFilter", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("DeletedAtUtc")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SoftDeleteWithoutFilters");
                 });
 #pragma warning restore 612, 618
         }

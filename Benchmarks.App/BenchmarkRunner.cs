@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.App;
 
+using System.Collections.ObjectModel;
+
 internal static class BenchmarkRunner
 {
     public static IEnumerable<Summary> RunAndBuildSummaries()
@@ -19,7 +21,8 @@ internal static class BenchmarkRunner
         return RunAndBuildSummaries([type], args);
     }
 
-    private static IEnumerable<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Local - Performance
+    private static List<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
     {
         AnsiConsole.Cursor.Move(CursorDirection.Up, 1);
 
@@ -33,8 +36,6 @@ internal static class BenchmarkRunner
                     RunBenchmarks(benchmarkTypes, args)));
 
         Console.SetOut(Console.Out);
-
-        AnsiConsole.Cursor.Move(CursorDirection.Down, 1);
 
         return summaries;
     }

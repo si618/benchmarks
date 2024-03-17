@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Benchmarks.Core.Database.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240317091734_Postgres")]
+    [Migration("20240317105114_Postgres")]
     partial class Postgres
     {
         /// <inheritdoc />
@@ -24,28 +24,6 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Benchmarks.Core.Entities.ClusteredIndex", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAtUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("LongInteger")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id")
-                        .HasAnnotation("SqlServer:Clustered", true);
-
-                    b.ToTable("ClusteredIndexes");
-                });
 
             modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKey", b =>
                 {
@@ -68,7 +46,51 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                     b.ToTable("GuidPrimaryKeys");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.HardDeleted", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKeyWithClusteredIndex", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id")
+                        .HasAnnotation("SqlServer:Clustered", true);
+
+                    b.ToTable("ClusteredIndexes");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.GuidPrimaryKeyWithNonClusteredIndex", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id")
+                        .HasAnnotation("SqlServer:Clustered", false);
+
+                    b.ToTable("NonClusteredIndexes");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.HardDelete", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,29 +113,7 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                     b.ToTable("HardDeletes");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.NonClusteredIndex", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedAtUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("LongInteger")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id")
-                        .HasAnnotation("SqlServer:Clustered", false);
-
-                    b.ToTable("NonClusteredIndexes");
-                });
-
-            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleted", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithFilter", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,7 +139,39 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SoftDeletes");
+                    b.HasIndex("IsDeleted")
+                        .HasFilter("IsDeleted = 0");
+
+                    b.ToTable("SoftDeleteWithFilters");
+                });
+
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithoutFilter", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeletedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("LongInteger")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SoftDeleteWithoutFilters");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,7 +22,7 @@ public sealed class SoftDeleteRepository(DbServer dbServer, string connectionStr
         return entities;
     }
 
-    public async Task InsertEntitiesAsync<TEntity>(int rowCount)
+    public async Task InsertAsync<TEntity>(int rowCount)
         where TEntity : LongPrimaryKeyBase, new()
     {
         await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
@@ -32,16 +32,17 @@ public sealed class SoftDeleteRepository(DbServer dbServer, string connectionStr
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task SoftDeleteEntitiesAsync(int rowCount)
+    public async Task SoftDeleteAsync<TEntity>(int rowCount)
+        where TEntity : class, ISoftDeletable
     {
         await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
         await dbContext.Database.MigrateAsync();
-        var entities = dbContext.SoftDeletes.Take(rowCount);
-        dbContext.SoftDeletes.RemoveRange(entities);
+        var entities = dbContext.Set<TEntity>().Take(rowCount);
+        dbContext.Set<TEntity>().RemoveRange(entities);
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task HardDeleteEntitiesAsync(int rowCount)
+    public async Task HardDeleteAsync(int rowCount)
     {
         await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
         await dbContext.Database.MigrateAsync();

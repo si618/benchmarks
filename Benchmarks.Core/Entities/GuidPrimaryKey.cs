@@ -10,6 +10,6 @@ public abstract class GuidPrimaryKeyBase : IBaseEntity
 
 public sealed class GuidPrimaryKey : GuidPrimaryKeyBase;
 
-public sealed class ClusteredIndex : GuidPrimaryKeyBase;
+public sealed class GuidPrimaryKeyWithClusteredIndex : GuidPrimaryKeyBase;
 
-public sealed class NonClusteredIndex : GuidPrimaryKeyBase;
+public sealed class GuidPrimaryKeyWithNonClusteredIndex : GuidPrimaryKeyBase;
