@@ -3,7 +3,7 @@
 using GuidPrimaryKeyEntity = Benchmarks.Core.Entities.GuidPrimaryKey;
 
 [BenchmarkInfo(
-    description: "Test performance of GUID based primary keys",
+    description: "Benchmark using GUID based primary keys",
     links: [
         "https://youtu.be/n17U7ntLMt4?si=lFUX24PlGOQrtIKR",
         "https://blog.novanet.no/careful-with-guid-as-clustered-index"

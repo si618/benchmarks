@@ -1,7 +1,7 @@
 ﻿namespace Benchmarks;
 
 [BenchmarkInfo(
-    description: "Test performance of soft delete operations",
+    description: "Benchmark soft verses hard deletes",
     links: ["https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core"],
     Category.Database)]
 public class SoftDelete
