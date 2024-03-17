@@ -2,7 +2,7 @@
 
 public sealed class SoftDeleteRepository(DbServer dbServer, string connectionString)
 {
-    private static TEntity[] CreateEntities<TEntity>(int rowCount)
+    private static TEntity[] Create<TEntity>(int rowCount)
         where TEntity : LongPrimaryKeyBase, new()
     {
         var entities = new TEntity[rowCount];
@@ -27,7 +27,7 @@ public sealed class SoftDeleteRepository(DbServer dbServer, string connectionStr
     {
         await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
         await dbContext.Database.MigrateAsync();
-        var entities = CreateEntities<TEntity>(rowCount);
+        var entities = Create<TEntity>(rowCount);
         await dbContext.Set<TEntity>().AddRangeAsync(entities);
         await dbContext.SaveChangesAsync();
     }

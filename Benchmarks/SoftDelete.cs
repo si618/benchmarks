@@ -2,7 +2,11 @@
 
 [BenchmarkInfo(
     description: "Benchmark hard verses soft deletes",
-    links: ["https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core"],
+    links:
+    [
+        "https://www.milanjovanovic.tech/blog/implementing-soft-delete-with-ef-core",
+        "https://blog.jetbrains.com/dotnet/2023/06/14/how-to-implement-a-soft-delete-strategy-with-entity-framework-core"
+    ],
     Category.Database)]
 public class SoftDelete
 {
@@ -31,13 +35,6 @@ public class SoftDelete
     {
         await _postgresContainer.StartAsync();
         await _sqlServerContainer.StartAsync();
-        // TODO Register DI for SoftDeleteInterceptor - Will require refactoring
-        // services.AddSingleton<SoftDeleteInterceptor>();
-        // services.AddDbContext<BenchmarkDbContext>(
-        //     (serviceProvider, options) => options
-        //         .UseSqlServer(_sqlServerContainer.GetConnectionString())
-        //         .AddInterceptors(
-        //         serviceProvider.GetRequiredService<SoftDeleteInterceptor>()));
     }
 
     [Benchmark]

@@ -37,9 +37,13 @@ internal static class BenchmarkExtensions
             table.AddRow("  [gray]Description[/]", benchmark.Description);
         }
 
+        var first = true;
+        var linkText = benchmark.Links.Length > 1 ? "Links" : "Link";
         foreach (var link in benchmark.Links)
         {
-            table.AddRow("  [gray]Link[/]", link.ToString());
+            var linkColumn = first ? $"  [gray]{linkText}[/]" : string.Empty;
+            table.AddRow(linkColumn, link.ToString());
+            first = false;
         }
 
         if (benchmark.Category is not Category.None)

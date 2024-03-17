@@ -6,10 +6,22 @@ public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<GuidPrimaryKeyWithClusteredIndex> ClusteredIndexes { get; set; } = null!;
     public DbSet<GuidPrimaryKey> GuidPrimaryKeys { get; set; } = null!;
     public DbSet<GuidPrimaryKeyWithNonClusteredIndex> NonClusteredIndexes { get; set; } = null!;
+
     // SoftDelete Benchmarks
     public DbSet<HardDelete> HardDeletes { get; set; } = null!;
     public DbSet<SoftDeleteWithFilter> SoftDeleteWithFilters { get; set; } = null!;
     public DbSet<SoftDeleteWithoutFilter> SoftDeleteWithoutFilters { get; set; } = null!;
+
+    /// <summary>
+    /// Adds the <see cref="SoftDeleteInterceptor"/> when configuring context
+    /// </summary>
+    /// <remarks>
+    /// Not ideal that it impacts all benchmarks using this context, but should do so consistently,
+    /// and less work than splitting context per benchmark
+    /// </remarks>
+    /// <param name="optionsBuilder"></param>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,5 +1,8 @@
 ﻿namespace Benchmarks.Core.Database;
 
+/// <summary>
+/// Modifies deleted entities as soft (virtual) deletes instead of hard (literal) deletes
+/// </summary>
 public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
@@ -12,18 +15,17 @@ public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
-        eventData
-            .Context
-            .ChangeTracker
-            .Entries<ISoftDeletable>()
-            .Where(e => e.State == EntityState.Deleted)
-            .ToList()
-            .ForEach(entity =>
+        foreach (var entry in eventData.Context.ChangeTracker.Entries())
+        {
+            if (entry is not { State: EntityState.Deleted, Entity: ISoftDeletable delete })
             {
-                entity.State = EntityState.Modified;
-                entity.Entity.IsDeleted = true;
-                entity.Entity.DeletedAtUtc = DateTimeOffset.UtcNow;
-            });
+                continue;
+            }
+
+            entry.State = EntityState.Modified;
+            delete.IsDeleted = true;
+            delete.DeletedAtUtc = DateTimeOffset.UtcNow;
+        }
 
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
