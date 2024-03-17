@@ -7,7 +7,6 @@ public sealed class GuidPrimaryKeyRepository(DbServer dbServer, string connectio
     {
         var entities = new TEntity[rowCount];
 
-        // Worth benchmarking against Parallel.For implementation?
         for (var row = 1; row <= rowCount; row++)
         {
             var now = DateTimeOffset.UtcNow;

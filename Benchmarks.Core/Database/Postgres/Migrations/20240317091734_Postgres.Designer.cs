@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Benchmarks.Core.Database.Postgres.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240317084132_CurrentPostgres")]
-    partial class CurrentPostgres
+    [Migration("20240317091734_Postgres")]
+    partial class Postgres
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

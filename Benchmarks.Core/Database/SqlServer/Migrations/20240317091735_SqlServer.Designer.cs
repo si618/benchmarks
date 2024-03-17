@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Benchmarks.Core.Database.SqlServer.Migrations
 {
     [DbContext(typeof(SqlServerDbContext))]
-    [Migration("20240317084134_CurrentSqlServer")]
-    partial class CurrentSqlServer
+    [Migration("20240317091735_SqlServer")]
+    partial class SqlServer
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
