@@ -1,6 +1,7 @@
 ﻿namespace Benchmarks.Core.Repositories;
 
-public sealed class GuidPrimaryKeyRepository(DbServer dbServer, string connectionString)
+public sealed class GuidPrimaryKeyRepository(BenchmarkDbContext dbContext)
+    : RepositoryBase(dbContext)
 {
     private static TEntity[] Create<TEntity>(int rowCount) where TEntity : GuidPrimaryKeyBase, new()
     {
@@ -24,10 +25,9 @@ public sealed class GuidPrimaryKeyRepository(DbServer dbServer, string connectio
 
     public async Task InsertAsync<TEntity>(int rowCount) where TEntity : GuidPrimaryKeyBase, new()
     {
-        await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
-        await dbContext.Database.MigrateAsync();
+        await DbContext.Database.MigrateAsync(); // TODO Refactor
         var entities = Create<TEntity>(rowCount);
-        await dbContext.Set<TEntity>().AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        await DbContext.Set<TEntity>().AddRangeAsync(entities);
+        await DbContext.SaveChangesAsync();
     }
 }

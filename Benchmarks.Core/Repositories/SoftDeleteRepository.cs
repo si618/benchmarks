@@ -1,6 +1,6 @@
 ﻿namespace Benchmarks.Core.Repositories;
 
-public sealed class SoftDeleteRepository(DbServer dbServer, string connectionString)
+public sealed class SoftDeleteRepository(BenchmarkDbContext dbContext) : RepositoryBase(dbContext)
 {
     private static TEntity[] Create<TEntity>(int rowCount)
         where TEntity : LongPrimaryKeyBase, new()
@@ -25,29 +25,43 @@ public sealed class SoftDeleteRepository(DbServer dbServer, string connectionStr
     public async Task InsertAsync<TEntity>(int rowCount)
         where TEntity : LongPrimaryKeyBase, new()
     {
-        await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
-        await dbContext.Database.MigrateAsync();
+        await DbContext.Database.MigrateAsync(); // TODO Refactor
         var entities = Create<TEntity>(rowCount);
-        await dbContext.Set<TEntity>().AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        await DbContext.Set<TEntity>().AddRangeAsync(entities);
+        await DbContext.SaveChangesAsync();
     }
 
-    public async Task SoftDeleteAsync<TEntity>(int rowCount)
-        where TEntity : class, ISoftDeletable
+    public async Task DeleteAsync<TEntity>(int rowCount)
+        where TEntity : LongPrimaryKeyBase
     {
-        await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
-        await dbContext.Database.MigrateAsync();
-        var entities = dbContext.Set<TEntity>().Take(rowCount);
-        dbContext.Set<TEntity>().RemoveRange(entities);
-        await dbContext.SaveChangesAsync();
+        var entities = DbContext.Set<TEntity>().Take(rowCount);
+        DbContext.Set<TEntity>().RemoveRange(entities);
+        await DbContext.SaveChangesAsync();
     }
 
-    public async Task HardDeleteAsync(int rowCount)
-    {
-        await using var dbContext = BenchmarkDbContextFactory.Create(dbServer, connectionString);
-        await dbContext.Database.MigrateAsync();
-        var entities = dbContext.HardDeletes.Take(rowCount);
-        dbContext.HardDeletes.RemoveRange(entities);
-        await dbContext.SaveChangesAsync();
-    }
+    /// <summary>
+    /// List all entities, including any that may be soft deleted.
+    /// </summary>
+    /// <remarks>
+    /// Returned entities have no change tracking, and are not subject to query filters.
+    /// </remarks>
+    public async Task<List<TEntity>> SelectAllAsync<TEntity>()
+        where TEntity : LongPrimaryKeyBase
+        => await DbContext.Set<TEntity>()
+            .AsNoTracking()
+            .IgnoreQueryFilters() // Not sure about this; are method comments ok or too much magic?
+            .ToListAsync();
+
+    /// <summary>
+    /// Select <see cref="ISoftDeletable.IsDeleted"/> entities predicated by <paramref name="isDeleted"/>.
+    /// </summary>
+    /// <remarks>
+    /// Returned entities have no change tracking.
+    /// </remarks>
+    public async Task<List<TEntity>> SelectByIsDeletedAsync<TEntity>(bool isDeleted)
+        where TEntity : LongPrimaryKeyBase, ISoftDeletable
+        => await DbContext.Set<TEntity>()
+            .AsNoTracking()
+            .Where(e => e.IsDeleted == isDeleted)
+            .ToListAsync();
 }

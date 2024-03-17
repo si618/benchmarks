@@ -9,50 +9,43 @@ using GuidPrimaryKeyEntity = Benchmarks.Core.Entities.GuidPrimaryKey;
         "https://blog.novanet.no/careful-with-guid-as-clustered-index"
     ],
     Category.Database)]
-public class GuidPrimaryKey
+public class GuidPrimaryKey : BenchmarkDbBase
 {
     [Params(1_000, 10_000)]
     public int RowCount { get; set; }
 
-    private readonly MsSqlContainer _sqlServer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:latest")
-        .Build();
-    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
-        .Build();
+    private GuidPrimaryKeyRepository CreateRepository(DbServer dbServer) =>
+        new(BenchmarkDbContextFactory.Create(dbServer, dbServer switch
+        {
+            DbServer.Postgres => Postgres.GetConnectionString(),
+            DbServer.SqlServer => SqlServer.GetConnectionString(),
+            _ => throw dbServer.InvalidEnumArgumentException()
+        }));
 
-    [GlobalSetup]
-    public async Task Setup()
-    {
-        await _postgres.StartAsync();
-        await _sqlServer.StartAsync();
-    }
-
+    /// <summary>
+    /// Separate benchmarks for each database as Postgres doesn't support clustered indexes.
+    /// </summary>
+    /// <remarks>
+    /// See https://stackoverflow.com/questions/4796548/about-clustered-index-in-postgres.
+    /// </remarks>
     [Benchmark]
-    public async Task InsertGuidPrimaryKeyPostgres()
+    public async Task InsertGuidPrimaryKey_OnPostgres()
     {
-        var repository = new GuidPrimaryKeyRepository(DbServer.Postgres, _postgres.GetConnectionString());
+        var repository = CreateRepository(DbServer.Postgres);
         await repository.InsertAsync<GuidPrimaryKeyEntity>(RowCount);
     }
 
     [Benchmark]
-    public async Task InsertGuidPrimaryKeyWithClusteredIndexSqlServer()
+    public async Task InsertGuidPrimaryKey_WithClusteredIndex_OnSqlServer()
     {
-        var repository = new GuidPrimaryKeyRepository(DbServer.SqlServer, _sqlServer.GetConnectionString());
+        var repository = CreateRepository(DbServer.SqlServer);
         await repository.InsertAsync<GuidPrimaryKeyWithClusteredIndex>(RowCount);
     }
 
     [Benchmark]
-    public async Task InsertGuidPrimaryKeyWithNonClusteredIndexSqlServer()
+    public async Task InsertGuidPrimaryKey_WithNonClusteredIndex_OnSqlServer()
     {
-        var repository = new GuidPrimaryKeyRepository(DbServer.SqlServer, _sqlServer.GetConnectionString());
+        var repository = CreateRepository(DbServer.SqlServer);
         await repository.InsertAsync<GuidPrimaryKeyWithNonClusteredIndex>(RowCount);
-    }
-
-    [GlobalCleanup]
-    public async Task Cleanup()
-    {
-        await _postgres.StopAsync();
-        await _sqlServer.StopAsync();
     }
 }

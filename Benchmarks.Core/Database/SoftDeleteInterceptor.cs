@@ -1,8 +1,5 @@
 ﻿namespace Benchmarks.Core.Database;
 
-/// <summary>
-/// Modifies deleted entities as soft (virtual) deletes instead of hard (literal) deletes
-/// </summary>
 public sealed class SoftDeleteInterceptor : SaveChangesInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(

@@ -110,7 +110,7 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                     b.ToTable("HardDeletes");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithFilter", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithIndexFilter", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -137,12 +137,12 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted")
-                        .HasFilter("IsDeleted = 0");
+                        .HasFilter("'IsDeleted' = '0'");
 
-                    b.ToTable("SoftDeleteWithFilters");
+                    b.ToTable("SoftDeleteWithIndexFilters");
                 });
 
-            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithoutFilter", b =>
+            modelBuilder.Entity("Benchmarks.Core.Entities.SoftDeleteWithoutIndexFilter", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -168,7 +168,7 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SoftDeleteWithoutFilters");
+                    b.ToTable("SoftDeleteWithoutIndexFilters");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,20 +9,14 @@ public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
 
     // SoftDelete Benchmarks
     public DbSet<HardDelete> HardDeletes { get; set; } = null!;
-    public DbSet<SoftDeleteWithFilter> SoftDeleteWithFilters { get; set; } = null!;
-    public DbSet<SoftDeleteWithoutFilter> SoftDeleteWithoutFilters { get; set; } = null!;
+    public DbSet<SoftDeleteWithIndexFilter> SoftDeleteWithIndexFilters { get; set; } = null!;
+    public DbSet<SoftDeleteWithoutIndexFilter> SoftDeleteWithoutIndexFilters { get; set; } = null!;
 
-    /// <summary>
-    /// Adds the <see cref="SoftDeleteInterceptor"/> when configuring context
-    /// </summary>
-    /// <remarks>
-    /// Not ideal that it impacts all benchmarks using this context, but should do so consistently,
-    /// and less work than splitting context per benchmark
-    /// </remarks>
-    /// <param name="optionsBuilder"></param>
+    /// <summary>Database agnostic configuration.</summary>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
 
+    /// <summary>Database agnostic model building.</summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // GuidPrimaryKey Benchmarks
@@ -38,13 +32,10 @@ public class BenchmarkDbContext(DbContextOptions options) : DbContext(options)
         // SoftDelete Benchmarks
         modelBuilder.Entity<HardDelete>()
             .HasKey(e => e.Id);
-        modelBuilder.Entity<SoftDeleteWithFilter>()
+        modelBuilder.Entity<SoftDeleteWithIndexFilter>()
             .HasQueryFilter(e => !e.IsDeleted)
             .HasKey(p => p.Id);
-        modelBuilder.Entity<SoftDeleteWithFilter>()
-            .HasIndex(e => e.IsDeleted)
-            .HasFilter("IsDeleted = 0");
-        modelBuilder.Entity<SoftDeleteWithoutFilter>()
+        modelBuilder.Entity<SoftDeleteWithoutIndexFilter>()
             .HasQueryFilter(e => !e.IsDeleted)
             .HasKey(p => p.Id);
     }

@@ -15,13 +15,13 @@ public abstract class LongPrimaryKeyBase : IBaseEntity, ILongPrimaryKey
     public long LongInteger { get; init; }
 }
 
-public sealed class SoftDeleteWithFilter : LongPrimaryKeyBase, ISoftDeletable
+public sealed class SoftDeleteWithIndexFilter : LongPrimaryKeyBase, ISoftDeletable
 {
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedAtUtc { get; set; }
 }
 
-public sealed class SoftDeleteWithoutFilter : LongPrimaryKeyBase, ISoftDeletable
+public sealed class SoftDeleteWithoutIndexFilter : LongPrimaryKeyBase, ISoftDeletable
 {
     public bool IsDeleted { get; set; }
     public DateTimeOffset? DeletedAtUtc { get; set; }

@@ -21,6 +21,7 @@ internal sealed class SpectreLogger : ILogger
     private static void Markup(LogKind logKind, string text, bool writeLine)
     {
         var prefix = string.Empty;
+
         switch (logKind)
         {
             case LogKind.Default:

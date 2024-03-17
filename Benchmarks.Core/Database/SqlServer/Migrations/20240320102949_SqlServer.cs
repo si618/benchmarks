@@ -1,13 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using System;
 
 #nullable disable
 
-namespace Benchmarks.Core.Database.Postgres.Migrations
+namespace Benchmarks.Core.Database.SqlServer.Migrations
 {
     /// <inheritdoc />
-    public partial class Postgres : Migration
+    public partial class SqlServer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,23 +15,24 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                 name: "ClusteredIndexes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClusteredIndexes", x => x.Id);
+                    table.PrimaryKey("PK_ClusteredIndexes", x => x.Id)
+                        .Annotation("SqlServer:Clustered", true);
                 });
 
             migrationBuilder.CreateTable(
                 name: "GuidPrimaryKeys",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -45,9 +45,9 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -59,55 +59,56 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                 name: "NonClusteredIndexes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NonClusteredIndexes", x => x.Id);
+                    table.PrimaryKey("PK_NonClusteredIndexes", x => x.Id)
+                        .Annotation("SqlServer:Clustered", false);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoftDeleteWithFilters",
+                name: "SoftDeleteWithIndexFilters",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoftDeleteWithFilters", x => x.Id);
+                    table.PrimaryKey("PK_SoftDeleteWithIndexFilters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SoftDeleteWithoutFilters",
+                name: "SoftDeleteWithoutIndexFilters",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    DeletedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    Text = table.Column<string>(type: "text", nullable: false),
-                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAtUtc = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LongInteger = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SoftDeleteWithoutFilters", x => x.Id);
+                    table.PrimaryKey("PK_SoftDeleteWithoutIndexFilters", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SoftDeleteWithFilters_IsDeleted",
-                table: "SoftDeleteWithFilters",
+                name: "IX_SoftDeleteWithIndexFilters_IsDeleted",
+                table: "SoftDeleteWithIndexFilters",
                 column: "IsDeleted",
-                filter: "IsDeleted = 0");
+                filter: "[IsDeleted] = 0");
         }
 
         /// <inheritdoc />
@@ -126,10 +127,10 @@ namespace Benchmarks.Core.Database.Postgres.Migrations
                 name: "NonClusteredIndexes");
 
             migrationBuilder.DropTable(
-                name: "SoftDeleteWithFilters");
+                name: "SoftDeleteWithIndexFilters");
 
             migrationBuilder.DropTable(
-                name: "SoftDeleteWithoutFilters");
+                name: "SoftDeleteWithoutIndexFilters");
         }
     }
 }

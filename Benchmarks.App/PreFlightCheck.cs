@@ -5,10 +5,10 @@ internal static class PreFlightCheck
     private static readonly string[] NeedsPreFlightCheck = ["app", "benchmark", "workflow"];
 
     internal static bool IsNeeded(string[] args) =>
-        args.Length > 0 &&                             // Not needed when showing app details
+        args.Length > 0 &&                       // Not needed when showing app details
         args.All(arg => !arg.StartsWith('-')) && // Not needed for help or version options
         args.Any(arg => NeedsPreFlightCheck      // Not needed for info or list commands
-            .Any(pf => arg.Contains(pf, StringComparison.OrdinalIgnoreCase)));
+            .Any(pf => arg.Equals(pf, StringComparison.OrdinalIgnoreCase)));
 
     internal static void Run(IEnumerable<string> args)
     {

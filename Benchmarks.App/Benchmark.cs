@@ -1,7 +1,5 @@
 ﻿namespace Benchmarks.App;
 
-using Core.Benchmarking;
-
 internal record Benchmark(
     string Name,
     string? Description = null,
@@ -23,7 +21,7 @@ internal static class BenchmarkExtensions
         var table = new Table
         {
             Border = TableBorder.None,
-            ShowHeaders = false
+            ShowHeaders = false,
         };
 
         table.AddColumn(new TableColumn("-").PadRight(3));

@@ -1,6 +1,6 @@
 ﻿namespace Benchmarks.Core.Database.Postgres;
 
-/// <summary>Create design time db context to enable ef migrations</summary>
+/// <summary>Create design time db context to enable ef migrations.</summary>
 public class PostgresDbContextDesignTimeFactory : IDesignTimeDbContextFactory<PostgresDbContext>
 {
     public PostgresDbContext CreateDbContext(string[] args)

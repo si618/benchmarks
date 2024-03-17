@@ -17,7 +17,8 @@ internal sealed class BenchmarkSettings : CommandSettings
             return ValidationResult.Error("Benchmark name required");
         }
 
-        if (Reflection.GetBenchmarkTypes().All(type => type.Name != Name))
+        if (Reflection.GetBenchmarkTypes()
+            .All(type => !type.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase)))
         {
             return ValidationResult.Error($"Benchmark not found '{Name}'");
         }

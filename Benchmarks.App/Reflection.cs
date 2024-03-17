@@ -1,17 +1,14 @@
 ﻿namespace Benchmarks.App;
 
-using Core.Benchmarking;
-
 internal static class Reflection
 {
     public static bool TryGetBenchmark(string name, out Benchmark benchmark)
     {
         var found = GetBenchmarkTypes()
             .Select(GetBenchmark)
-            .Where(type => type.Name == name)
-            .FirstOrDefault(p =>
-                p.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
-                p.Description.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+            .FirstOrDefault(b =>
+                b.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
+                b.Description.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
         benchmark = found ?? null!;
 
@@ -46,6 +43,6 @@ internal static class Reflection
         GetBenchmarkTypes()
             .Select(GetBenchmark)
             .OrderBy(p => p.Category)
-            .ThenBy(p => p.Description)
+            .ThenBy(p => p.Name)
             .GroupBy(p => p.Category, p => p);
 }

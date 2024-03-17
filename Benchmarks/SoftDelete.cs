@@ -8,7 +8,7 @@
         "https://blog.jetbrains.com/dotnet/2023/06/14/how-to-implement-a-soft-delete-strategy-with-entity-framework-core"
     ],
     Category.Database)]
-public class SoftDelete
+public class SoftDelete : BenchmarkDbBase
 {
     [Params(1_000, 10_000)]
     public int RowCount { get; set; }
@@ -16,55 +16,51 @@ public class SoftDelete
     [Params(DbServer.Postgres, DbServer.SqlServer)]
     public DbServer DbServer { get; set; }
 
-    private readonly MsSqlContainer _sqlServerContainer = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:latest")
-        .Build();
-    private readonly PostgreSqlContainer _postgresContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
-        .Build();
-
-    private SoftDeleteRepository CreateRepository() => new(DbServer, DbServer switch
-    {
-        DbServer.Postgres => _postgresContainer.GetConnectionString(),
-        DbServer.SqlServer => _sqlServerContainer.GetConnectionString(),
-        _ => throw DbServer.InvalidEnumArgumentException()
-    });
-
-    [GlobalSetup]
-    public async Task Setup()
-    {
-        await _postgresContainer.StartAsync();
-        await _sqlServerContainer.StartAsync();
-    }
+    private SoftDeleteRepository CreateRepository(DbServer dbServer) =>
+        new(BenchmarkDbContextFactory.Create(dbServer, dbServer switch
+        {
+            DbServer.Postgres => Postgres.GetConnectionString(),
+            DbServer.SqlServer => SqlServer.GetConnectionString(),
+            _ => throw dbServer.InvalidEnumArgumentException()
+        }));
 
     [Benchmark]
-    public async Task HardDelete()
+    public async Task InsertThenHardDelete()
     {
-        var repository = CreateRepository();
+        var repository = CreateRepository(DbServer);
         await repository.InsertAsync<HardDelete>(RowCount);
-        await repository.HardDeleteAsync(RowCount);
+        await repository.DeleteAsync<HardDelete>(RowCount);
     }
 
     [Benchmark]
-    public async Task SoftDeleteWithQueryFilter()
+    public async Task InsertThenSoftDeleteWithIndexFilter()
     {
-        var repository = CreateRepository();
-        await repository.InsertAsync<SoftDeleteWithFilter>(RowCount);
-        await repository.SoftDeleteAsync<SoftDeleteWithFilter>(RowCount);
+        var repository = CreateRepository(DbServer);
+        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount);
     }
 
     [Benchmark]
-    public async Task SoftDeleteWithoutQueryFilter()
+    public async Task InsertThenSoftDeleteWithoutIndexFilter()
     {
-        var repository = CreateRepository();
-        await repository.InsertAsync<SoftDeleteWithoutFilter>(RowCount);
-        await repository.SoftDeleteAsync<SoftDeleteWithoutFilter>(RowCount);
+        var repository = CreateRepository(DbServer);
+        await repository.InsertAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(RowCount);
     }
 
-    [GlobalCleanup]
-    public async Task Cleanup()
+    [Benchmark]
+    public async Task InsertThenListSoftDeleteWithIndexFilter()
     {
-        await _postgresContainer.StopAsync();
-        await _sqlServerContainer.StopAsync();
+        var repository = CreateRepository(DbServer);
+        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.SelectAllAsync<SoftDeleteWithIndexFilter>();
+    }
+
+    [Benchmark]
+    public async Task InsertThenListSoftDeleteWithoutIndexFilter()
+    {
+        var repository = CreateRepository(DbServer);
+        await repository.InsertAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.SelectAllAsync<SoftDeleteWithoutIndexFilter>();
     }
 }
