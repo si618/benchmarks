@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710934396970,
+  "lastUpdate": 1710941487297,
   "repoUrl": "https://github.com/si618/benchmarks",
   "entries": {
     "Benchmarks": [
@@ -936,6 +936,186 @@ window.BENCHMARK_DATA = {
             "value": 1805298267.88,
             "unit": "ns",
             "range": "± 590602492.16344"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "committer": {
+            "email": "sshnug.si+github@gmail.com",
+            "name": "Simon McKenna",
+            "username": "si618"
+          },
+          "distinct": true,
+          "id": "68a3cbbfa3f5c725e03fcbbc6b79742e20b47512",
+          "message": "Add StringExtensions.EqualsIgnoreCase",
+          "timestamp": "2024-03-20T23:25:40+10:30",
+          "tree_id": "4a3de0d23816cc6718c6ea6636297161e9236408",
+          "url": "https://github.com/si618/benchmarks/commit/68a3cbbfa3f5c725e03fcbbc6b79742e20b47512"
+        },
+        "date": 1710941486780,
+        "tool": "benchmarkdotnet",
+        "benches": [
+          {
+            "name": "InsertGuidPrimaryKey_OnPostgres",
+            "value": 49615558.83333332,
+            "unit": "ns",
+            "range": "± 1115859.6696436657"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKey_WithClusteredIndex_OnSqlServer(RowCount: 1000)",
+            "value": 48977688.469072156,
+            "unit": "ns",
+            "range": "± 3680801.507131951"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKey_WithNonClusteredIndex_OnSqlServer(RowCount: 1000)",
+            "value": 47395819.18965516,
+            "unit": "ns",
+            "range": "± 1341870.5475184012"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKey_OnPostgres(RowCount: 10000)",
+            "value": 344844521.2692308,
+            "unit": "ns",
+            "range": "± 9336141.132509142"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKey_WithClusteredIndex_OnSqlServer(RowCount: 10000)",
+            "value": 441296799.5555556,
+            "unit": "ns",
+            "range": "± 8971837.821976913"
+          },
+          {
+            "name": "Benchmarks.GuidPrimaryKey.InsertGuidPrimaryKey_WithNonClusteredIndex_OnSqlServer(RowCount: 10000)",
+            "value": 458546805.9230769,
+            "unit": "ns",
+            "range": "± 5298678.20390673"
+          },
+          {
+            "name": "InsertThenHardDelete",
+            "value": 91808497.25925927,
+            "unit": "ns",
+            "range": "± 2755468.298057497"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithIndexFilter(RowCount: 1000, DbServer: Postgres)",
+            "value": 135617526.85106382,
+            "unit": "ns",
+            "range": "± 5287089.051650586"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithoutIndexFilter(RowCount: 1000, DbServer: Postgres)",
+            "value": 129534750.046875,
+            "unit": "ns",
+            "range": "± 2718759.891960568"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithIndexFilter(RowCount: 1000, DbServer: Postgres)",
+            "value": 274803140.0625,
+            "unit": "ns",
+            "range": "± 104599764.77063014"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithoutIndexFilter(RowCount: 1000, DbServer: Postgres)",
+            "value": 276832332.9575,
+            "unit": "ns",
+            "range": "± 108066500.4346111"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenHardDelete(RowCount: 1000, DbServer: SqlServer)",
+            "value": 78780434.2675,
+            "unit": "ns",
+            "range": "± 9052062.767120423"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithIndexFilter(RowCount: 1000, DbServer: SqlServer)",
+            "value": 137397971.30808082,
+            "unit": "ns",
+            "range": "± 11876627.439589955"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithoutIndexFilter(RowCount: 1000, DbServer: SqlServer)",
+            "value": 156345757.8,
+            "unit": "ns",
+            "range": "± 18224764.026377596"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithIndexFilter(RowCount: 1000, DbServer: SqlServer)",
+            "value": 580777922.8175,
+            "unit": "ns",
+            "range": "± 251794464.83319178"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithoutIndexFilter(RowCount: 1000, DbServer: SqlServer)",
+            "value": 587856277.5225,
+            "unit": "ns",
+            "range": "± 244939109.66428274"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenHardDelete(RowCount: 10000, DbServer: Postgres)",
+            "value": 802739925.6666666,
+            "unit": "ns",
+            "range": "± 13963919.741177369"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithIndexFilter(RowCount: 10000, DbServer: Postgres)",
+            "value": 1227222638.9333334,
+            "unit": "ns",
+            "range": "± 18593258.65830492"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithoutIndexFilter(RowCount: 10000, DbServer: Postgres)",
+            "value": 1229194837.7692308,
+            "unit": "ns",
+            "range": "± 14881624.187610358"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithIndexFilter(RowCount: 10000, DbServer: Postgres)",
+            "value": 1105992975.33,
+            "unit": "ns",
+            "range": "± 265394681.20822123"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithoutIndexFilter(RowCount: 10000, DbServer: Postgres)",
+            "value": 1066687357.91,
+            "unit": "ns",
+            "range": "± 259689696.33275798"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenHardDelete(RowCount: 10000, DbServer: SqlServer)",
+            "value": 590616911.1666666,
+            "unit": "ns",
+            "range": "± 8170886.516175228"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithIndexFilter(RowCount: 10000, DbServer: SqlServer)",
+            "value": 1315156306.5,
+            "unit": "ns",
+            "range": "± 17112029.402835935"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenSoftDeleteWithoutIndexFilter(RowCount: 10000, DbServer: SqlServer)",
+            "value": 1157097681.8461537,
+            "unit": "ns",
+            "range": "± 6372550.817811445"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithIndexFilter(RowCount: 10000, DbServer: SqlServer)",
+            "value": 1889803770.53,
+            "unit": "ns",
+            "range": "± 564702349.5725949"
+          },
+          {
+            "name": "Benchmarks.SoftDelete.InsertThenListSoftDeleteWithoutIndexFilter(RowCount: 10000, DbServer: SqlServer)",
+            "value": 1830268715.73,
+            "unit": "ns",
+            "range": "± 565194148.9762214"
           }
         ]
       }
