@@ -7,8 +7,8 @@ internal static class Reflection
         var found = GetBenchmarkTypes()
             .Select(GetBenchmark)
             .FirstOrDefault(b =>
-                b.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase) ||
-                b.Description.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+                b.Name.EqualsIgnoreCase(name) ||
+                b.Description.EqualsIgnoreCase(name));
 
         benchmark = found ?? null!;
 

@@ -6,9 +6,8 @@ internal static class PreFlightCheck
 
     internal static bool IsNeeded(string[] args) =>
         args.Length > 0 &&                       // Not needed when showing app details
-        args.All(arg => !arg.StartsWith('-')) && // Not needed for help or version options
-        args.Any(arg => NeedsPreFlightCheck      // Not needed for info or list commands
-            .Any(pf => arg.Equals(pf, StringComparison.OrdinalIgnoreCase)));
+        args.All(arg => !arg.StartsWith('-')) && // or for --help or --version options
+        args.Any(arg => NeedsPreFlightCheck.Any(arg.EqualsIgnoreCase));
 
     internal static void Run(IEnumerable<string> args)
     {

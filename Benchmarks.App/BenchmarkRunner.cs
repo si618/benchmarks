@@ -14,7 +14,8 @@ internal static class BenchmarkRunner
     public static IEnumerable<Summary> RunAndBuildSummaries(BenchmarkSettings settings)
     {
         var args = settings.BuildArgs();
-        var type = Reflection.GetBenchmarkTypes().First(type => type.Name == settings.Name);
+        var type = Reflection.GetBenchmarkTypes()
+            .First(type => type.Name.EqualsIgnoreCase(settings.Name));
 
         return RunAndBuildSummaries([type], args);
     }
