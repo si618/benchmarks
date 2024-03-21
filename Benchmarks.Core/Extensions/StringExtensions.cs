@@ -1,4 +1,4 @@
-﻿namespace Benchmarks.Core;
+﻿namespace Benchmarks.Core.Extensions;
 
 public static class StringExtensions
 {
