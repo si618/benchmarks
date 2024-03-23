@@ -2,7 +2,7 @@
 
 public sealed class SoftDeleteRepository(BenchmarkDbContext dbContext) : RepositoryBase(dbContext)
 {
-    private static TEntity[] Create<TEntity>(int rowCount)
+    private static TEntity[] Create<TEntity>(int rowCount, int index)
         where TEntity : LongPrimaryKeyBase, new()
     {
         var entities = new TEntity[rowCount];
@@ -13,7 +13,7 @@ public sealed class SoftDeleteRepository(BenchmarkDbContext dbContext) : Reposit
 
             entities[row - 1] = new TEntity
             {
-                Text = $"Row {row:N0}",
+                Text = $"Row {row + index:N0}",
                 CreatedAtUtc = now,
                 LongInteger = now.Ticks
             };
@@ -22,21 +22,40 @@ public sealed class SoftDeleteRepository(BenchmarkDbContext dbContext) : Reposit
         return entities;
     }
 
-    public async Task InsertAsync<TEntity>(int rowCount)
+    public async Task CreateAsync<TEntity>(int rowCount, int chunkSize = 1_000)
         where TEntity : LongPrimaryKeyBase, new()
     {
-        await DbContext.Database.MigrateAsync(); // TODO Refactor
-        var entities = Create<TEntity>(rowCount);
-        await DbContext.Set<TEntity>().AddRangeAsync(entities);
-        await DbContext.SaveChangesAsync();
+        if (rowCount < 1) return;
+
+        var index = 0;
+        var chunks = Enumerable.Range(1, rowCount).Chunk(chunkSize);
+        foreach (var chunk in chunks)
+        {
+            var entities = Create<TEntity>(chunk.Length, index);
+            await DbContext.Set<TEntity>().AddRangeAsync(entities);
+            await DbContext.SaveChangesAsync();
+            index += chunkSize;
+        }
     }
 
-    public async Task DeleteAsync<TEntity>(int rowCount)
+    public async Task DeleteAsync<TEntity>(int rowCount, int chunkSize = 1_000)
         where TEntity : LongPrimaryKeyBase
     {
-        var entities = DbContext.Set<TEntity>().Take(rowCount);
-        DbContext.Set<TEntity>().RemoveRange(entities);
-        await DbContext.SaveChangesAsync();
+        if (rowCount < 1) return;
+
+        var deleted = 0;
+        while (deleted < rowCount)
+        {
+            var entities = DbContext.Set<TEntity>().Take(chunkSize);
+            var count = await entities.CountAsync();
+            if (count < chunkSize)
+            {
+                chunkSize = count;
+            }
+            DbContext.Set<TEntity>().RemoveRange(entities);
+            await DbContext.SaveChangesAsync();
+            deleted += chunkSize;
+        }
     }
 
     /// <summary>

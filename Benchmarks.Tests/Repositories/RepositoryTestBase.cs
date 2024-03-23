@@ -1,4 +1,4 @@
-namespace Benchmarks.Tests;
+namespace Benchmarks.Tests.Repositories;
 
 /// <summary>
 /// Repository test base to setup database containers.

@@ -1,4 +1,4 @@
-namespace Benchmarks.Tests;
+namespace Benchmarks.Tests.Repositories;
 
 public class SoftDeleteRepositoryTest : RepositoryTestBase
 {
@@ -10,14 +10,15 @@ public class SoftDeleteRepositoryTest : RepositoryTestBase
     [Theory]
     [InlineData(DbServer.Postgres)]
     [InlineData(DbServer.SqlServer)]
-    public async Task InsertAsync_InsertsRows_ForExpectedRowCount(DbServer dbServer)
+    public async Task CreateAsync_InsertsRows_ForExpectedRowCount(DbServer dbServer)
     {
         // Arrange
         var repository = CreateRepository(dbServer);
+        await repository.MigrateAsync();
 
         // Act
-        await repository.InsertAsync<HardDelete>(RowCount);
-        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.CreateAsync<HardDelete>(RowCount);
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
 
         // Assert
         var hardDeletes = await repository.SelectAllAsync<HardDelete>();
@@ -29,11 +30,12 @@ public class SoftDeleteRepositoryTest : RepositoryTestBase
     [Theory]
     [InlineData(DbServer.Postgres)]
     [InlineData(DbServer.SqlServer)]
-    public async Task DeleteAsync_DeletesAllRows_WhenUsingHardDelete(DbServer dbServer)
+    public async Task DeleteAsync_DeletesRows_WhenUsingHardDelete(DbServer dbServer)
     {
         // Arrange
         var repository = CreateRepository(dbServer);
-        await repository.InsertAsync<HardDelete>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<HardDelete>(RowCount);
 
         // Act
         await repository.DeleteAsync<HardDelete>(RowCount);
@@ -50,7 +52,8 @@ public class SoftDeleteRepositoryTest : RepositoryTestBase
     {
         // Arrange
         var repository = CreateRepository(dbServer);
-        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
 
         // Act
         await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount);
@@ -73,7 +76,8 @@ public class SoftDeleteRepositoryTest : RepositoryTestBase
     {
         // Arrange
         var repository = CreateRepository(dbServer);
-        await repository.InsertAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
 
         // Act
         await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(RowCount);

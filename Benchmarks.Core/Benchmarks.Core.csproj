@@ -13,11 +13,4 @@
     <PackageReference Include="Testcontainers.PostgreSql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="BenchmarkDotNet.Columns" />
-    <Using Include="BenchmarkDotNet.Configs" />
-    <Using Include="BenchmarkDotNet.Diagnosers" />
-    <Using Include="Microsoft.EntityFrameworkCore" />
-  </ItemGroup>
-
 </Project>

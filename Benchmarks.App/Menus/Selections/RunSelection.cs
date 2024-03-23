@@ -18,6 +18,7 @@ internal sealed record RunSelection : Selection
     public override int Execute()
     {
         ConsoleWriter.WriteHeader(clearConsole: true);
+        AnsiConsole.WriteLine();
 
         if (BenchmarkRunner.IsDebugConfiguration(true))
         {

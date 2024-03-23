@@ -1,5 +1,7 @@
 ﻿namespace Benchmarks.Core.Benchmarking;
 
+[ShortRunJob]
+[MarkdownExporter]
 public abstract class BenchmarkBase
 {
     // Common code for all benchmarks goes here

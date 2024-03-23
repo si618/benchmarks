@@ -10,7 +10,7 @@
     Category.Database)]
 public class SoftDelete : BenchmarkDbBase
 {
-    [Params(1_000, 10_000)]
+    [Params(1_000)]
     public int RowCount { get; set; }
 
     [Params(DbServer.Postgres, DbServer.SqlServer)]
@@ -25,42 +25,44 @@ public class SoftDelete : BenchmarkDbBase
         }));
 
     [Benchmark]
-    public async Task InsertThenHardDelete()
+    public async Task HardDelete()
     {
         var repository = CreateRepository(DbServer);
-        await repository.InsertAsync<HardDelete>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<HardDelete>(RowCount);
         await repository.DeleteAsync<HardDelete>(RowCount);
     }
 
     [Benchmark]
-    public async Task InsertThenSoftDeleteWithIndexFilter()
+    public async Task SoftDeleteWithIndexFilter()
     {
         var repository = CreateRepository(DbServer);
-        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
         await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount);
     }
 
     [Benchmark]
-    public async Task InsertThenSoftDeleteWithoutIndexFilter()
+    public async Task SoftDeleteWithoutIndexFilter()
     {
         var repository = CreateRepository(DbServer);
-        await repository.InsertAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
         await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(RowCount);
     }
 
     [Benchmark]
-    public async Task InsertThenListSoftDeleteWithIndexFilter()
+    public async Task SelectAllWithIndexFilter()
     {
         var repository = CreateRepository(DbServer);
-        await repository.InsertAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
         await repository.SelectAllAsync<SoftDeleteWithIndexFilter>();
     }
 
     [Benchmark]
-    public async Task InsertThenListSoftDeleteWithoutIndexFilter()
+    public async Task SelectAllWithoutIndexFilter()
     {
         var repository = CreateRepository(DbServer);
-        await repository.InsertAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
         await repository.SelectAllAsync<SoftDeleteWithoutIndexFilter>();
     }
 }

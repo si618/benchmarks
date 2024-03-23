@@ -11,7 +11,7 @@ using GuidPrimaryKeyEntity = Benchmarks.Core.Entities.GuidPrimaryKey;
     Category.Database)]
 public class GuidPrimaryKey : BenchmarkDbBase
 {
-    [Params(1_000, 10_000)]
+    [Params(1_000)]
     public int RowCount { get; set; }
 
     private GuidPrimaryKeyRepository CreateRepository(DbServer dbServer) =>
@@ -32,20 +32,23 @@ public class GuidPrimaryKey : BenchmarkDbBase
     public async Task InsertGuidPrimaryKey_OnPostgres()
     {
         var repository = CreateRepository(DbServer.Postgres);
-        await repository.InsertAsync<GuidPrimaryKeyEntity>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<GuidPrimaryKeyEntity>(RowCount);
     }
 
     [Benchmark]
     public async Task InsertGuidPrimaryKey_WithClusteredIndex_OnSqlServer()
     {
         var repository = CreateRepository(DbServer.SqlServer);
-        await repository.InsertAsync<GuidPrimaryKeyWithClusteredIndex>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<GuidPrimaryKeyWithClusteredIndex>(RowCount);
     }
 
     [Benchmark]
     public async Task InsertGuidPrimaryKey_WithNonClusteredIndex_OnSqlServer()
     {
         var repository = CreateRepository(DbServer.SqlServer);
-        await repository.InsertAsync<GuidPrimaryKeyWithNonClusteredIndex>(RowCount);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<GuidPrimaryKeyWithNonClusteredIndex>(RowCount);
     }
 }

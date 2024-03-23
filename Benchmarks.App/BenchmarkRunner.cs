@@ -23,6 +23,8 @@ internal static class BenchmarkRunner
     // ReSharper disable once ReturnTypeCanBeEnumerable.Local - Performance
     private static List<Summary> RunAndBuildSummaries(Type[] benchmarkTypes, string[] args)
     {
+        AnsiConsole.Cursor.MoveUp(1);
+
         Console.SetOut(TextWriter.Null);
 
         var summaries = new List<Summary>();
@@ -58,7 +60,6 @@ internal static class BenchmarkRunner
         {
             AnsiConsole.MarkupLine(
                 "[orange1]Warning:[/] App should be in [yellow]RELEASE[/] configuration to run benchmarks");
-
             AnsiConsole.WriteLine();
 
             return false;
@@ -66,7 +67,6 @@ internal static class BenchmarkRunner
 
         AnsiConsole.MarkupLine(
             "[red]Error:[/] App must be in [yellow]RELEASE[/] configuration to run benchmarks");
-
         AnsiConsole.WriteLine();
 
         return true;
