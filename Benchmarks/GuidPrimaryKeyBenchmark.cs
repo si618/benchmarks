@@ -9,7 +9,7 @@ using GuidPrimaryKeyEntity = Benchmarks.Core.Entities.GuidPrimaryKey;
         "https://blog.novanet.no/careful-with-guid-as-clustered-index"
     ],
     Category.Database)]
-public class GuidPrimaryKey : BenchmarkDbBase
+public class GuidPrimaryKeyBenchmark : BenchmarkDbBase
 {
     [Params(1_000)]
     public int RowCount { get; set; }

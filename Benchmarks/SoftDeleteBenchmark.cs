@@ -8,12 +8,12 @@
         "https://blog.jetbrains.com/dotnet/2023/06/14/how-to-implement-a-soft-delete-strategy-with-entity-framework-core"
     ],
     Category.Database)]
-public class SoftDelete : BenchmarkDbBase
+public class SoftDeleteBenchmark : BenchmarkDbBase
 {
     [Params(1_000)]
     public int RowCount { get; set; }
 
-    [Params(DbServer.Postgres, DbServer.SqlServer)]
+    [Params(DbServer.Postgres/*, DbServer.SqlServer*/)]
     public DbServer DbServer { get; set; }
 
     private SoftDeleteRepository CreateRepository(DbServer dbServer) =>
@@ -64,5 +64,41 @@ public class SoftDelete : BenchmarkDbBase
         var repository = CreateRepository(DbServer);
         await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
         await repository.SelectAllAsync<SoftDeleteWithoutIndexFilter>();
+    }
+
+    [Benchmark]
+    public async Task SelectDeletedWithIndexFilter()
+    {
+        var repository = CreateRepository(DbServer);
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount / 3);
+        await repository.SelectDeletedAsync<SoftDeleteWithIndexFilter>();
+    }
+
+    [Benchmark]
+    public async Task SelectDeletedWithoutIndexFilter()
+    {
+        var repository = CreateRepository(DbServer);
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount / 3);
+        await repository.SelectDeletedAsync<SoftDeleteWithoutIndexFilter>();
+    }
+
+    [Benchmark]
+    public async Task SelectNotDeletedWithIndexFilter()
+    {
+        var repository = CreateRepository(DbServer);
+        await repository.CreateAsync<SoftDeleteWithIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount / 3);
+        await repository.SelectNonDeletedAsync<SoftDeleteWithIndexFilter>();
+    }
+
+    [Benchmark]
+    public async Task SelectNotDeletedWithoutIndexFilter()
+    {
+        var repository = CreateRepository(DbServer);
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithIndexFilter>(RowCount / 3);
+        await repository.SelectNonDeletedAsync<SoftDeleteWithoutIndexFilter>();
     }
 }

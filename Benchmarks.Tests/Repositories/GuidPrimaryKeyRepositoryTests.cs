@@ -1,6 +1,6 @@
 namespace Benchmarks.Tests.Repositories;
 
-public class GuidPrimaryKeyRepositoryTest : RepositoryTestBase
+public class GuidPrimaryKeyRepositoryTests : RepositoryTestBase
 {
     private const int RowCount = 10;
 

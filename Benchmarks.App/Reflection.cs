@@ -27,14 +27,14 @@ internal static class Reflection
         }
 
         return new Benchmark(
-            memberInfo.Name,
+            memberInfo.Name[..^9], // Trim Benchmark from name
             attribute.Description,
             attribute.Links,
             attribute.Category);
     }
 
     public static IEnumerable<Type> GetBenchmarkTypes() =>
-        typeof(GuidPrimaryKey).Assembly
+        typeof(GuidPrimaryKeyBenchmark).Assembly
             .GetTypes()
             .Where(m => m.GetCustomAttribute(typeof(BenchmarkInfoAttribute)) is not null)
             .OrderBy(t => t.Name);

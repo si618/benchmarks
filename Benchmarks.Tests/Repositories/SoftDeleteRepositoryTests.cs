@@ -1,8 +1,8 @@
 namespace Benchmarks.Tests.Repositories;
 
-public class SoftDeleteRepositoryTest : RepositoryTestBase
+public class SoftDeleteRepositoryTests : RepositoryTestBase
 {
-    private const int RowCount = 10;
+    private const int RowCount = 1_000;
 
     private SoftDeleteRepository CreateRepository(DbServer dbServer) =>
         new(CreateDbContext(dbServer));
@@ -72,24 +72,83 @@ public class SoftDeleteRepositoryTest : RepositoryTestBase
     [Theory]
     [InlineData(DbServer.Postgres)]
     [InlineData(DbServer.SqlServer)]
-    public async Task DeleteAsync_DeletesNoRows_WhenUsingSoftDeleteWithoutIndexFilter(DbServer dbServer)
+    public async Task SelectAllAsync_ReturnsAllRows_WithExpectedDeletedStatus(DbServer dbServer)
     {
         // Arrange
+        const int delete = RowCount / 2;
         var repository = CreateRepository(dbServer);
         await repository.MigrateAsync();
         await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(delete);
 
         // Act
-        await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        var softDeletes = await repository.SelectAllAsync<SoftDeleteWithoutIndexFilter>();
 
         // Assert
-        var softDeletes = await repository.SelectAllAsync<SoftDeleteWithoutIndexFilter>();
         softDeletes.Should()
             .HaveCount(RowCount)
             .And.AllSatisfy(e =>
             {
+                if (e.Id > delete)
+                {
+                    e.IsDeleted.Should().BeFalse();
+                    e.DeletedAtUtc.Should().BeNull();
+                }
+                else
+                {
+                    e.IsDeleted.Should().BeTrue();
+                    e.DeletedAtUtc.Should().NotBeNull();
+                }
+            });
+    }
+
+    [Theory]
+    [InlineData(DbServer.Postgres)]
+    [InlineData(DbServer.SqlServer)]
+    public async Task SelectDeletedAsync_ReturnsOnlyDeletedRows(DbServer dbServer)
+    {
+        // Arrange
+        const int deleteRowCount = RowCount / 3;
+        var repository = CreateRepository(dbServer);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(deleteRowCount);
+
+        // Act
+        var softDeletes = await repository.SelectDeletedAsync<SoftDeleteWithoutIndexFilter>();
+
+        // Assert
+        softDeletes.Should()
+            .HaveCount(deleteRowCount)
+            .And.AllSatisfy(e =>
+            {
                 e.IsDeleted.Should().BeTrue();
                 e.DeletedAtUtc.Should().NotBeNull();
+            });
+    }
+
+    [Theory]
+    [InlineData(DbServer.Postgres)]
+    [InlineData(DbServer.SqlServer)]
+    public async Task SelectNonDeletedAsync_ReturnsOnlyNonDeletedRows(DbServer dbServer)
+    {
+        // Arrange
+        const int deleteRowCount = RowCount / 3;
+        var repository = CreateRepository(dbServer);
+        await repository.MigrateAsync();
+        await repository.CreateAsync<SoftDeleteWithoutIndexFilter>(RowCount);
+        await repository.DeleteAsync<SoftDeleteWithoutIndexFilter>(deleteRowCount);
+
+        // Act
+        var softDeletes = await repository.SelectNonDeletedAsync<SoftDeleteWithoutIndexFilter>();
+
+        // Assert
+        softDeletes.Should()
+            .HaveCount(RowCount - deleteRowCount)
+            .And.AllSatisfy(e =>
+            {
+                e.IsDeleted.Should().BeFalse();
+                e.DeletedAtUtc.Should().BeNull();
             });
     }
 }

@@ -18,10 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Benchmarks.Core\Benchmarks.Core.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Architecture\" />
+      <ProjectReference Include="..\Benchmarks\Benchmarks.csproj" />
     </ItemGroup>
 
 </Project>
