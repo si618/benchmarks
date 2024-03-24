@@ -2,7 +2,7 @@
 
 public abstract class RepositoryBase(BenchmarkDbContext dbContext)
 {
-    protected BenchmarkDbContext DbContext { get; init; } = dbContext;
+    protected BenchmarkDbContext DbContext { get; } = dbContext;
 
     public async Task MigrateAsync() => await DbContext.Database.MigrateAsync();
 }

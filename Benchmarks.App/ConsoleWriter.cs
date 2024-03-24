@@ -5,8 +5,8 @@ internal static class ConsoleWriter
     private const string Header =
         """
         ______  _______ __    _ _______ _     _ _______ _______ _______ _     _ ________
-        |_____) |______ | \\  | |       |_____| |  |  | |_____| |_____/ |____/  |______
-        |_____) |______ |  \\_| |______ |     | |  |  | |     | |    \\ |    \\ _______|
+        |_____| |______ | \\  | |       |_____| |  |  | |_____| |_____/ |____/  |______
+        |_____| |______ |  \\_| |______ |     | |  |  | |     | |    \\ |    \\ _______|
 
         """;
     private static readonly Rainbow Lolcat = new(new RainbowStyle(EscapeSequence.Spectre));
