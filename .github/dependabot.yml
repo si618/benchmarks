@@ -15,3 +15,6 @@ updates:
       spectre:
         patterns:
           - "Spectre*"
+      testcontainers:
+        patterns:
+          - "Testcontainers*"
