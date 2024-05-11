@@ -9,12 +9,15 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      xunit:
+      ef:
         patterns:
-          - "xunit*"
+          - "Microsoft.EntityFrameworkCore*"
       spectre:
         patterns:
           - "Spectre*"
       testcontainers:
         patterns:
           - "Testcontainers*"
+      xunit:
+        patterns:
+          - "xunit*"
